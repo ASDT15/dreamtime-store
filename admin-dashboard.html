@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>admin لوحة تحكم المدير - DREAM TIME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css ">
+    <style>
+        /* تحسين الخطوط */
+        body {
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            background-color: #f9fafb;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50, #ff87f1);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            background: none;
+            border: none;
+            color: white;
+            text-align: right;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar button:hover {
+            background-color: #ff87f1;
+        }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            background-color: #fff;
+            overflow-y: auto;
+        }
+
+        h2 {
+            color: #ff87f1;
+            border-bottom: 2px solid #ff87f1;
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+
+        th {
+            background-color: #ff87f1;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #ff87f1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #ff72d0;
+        }
+
+        .edit,
+        .delete,
+        .view,
+        .complete {
+            padding: 5px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .edit {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .view {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .complete {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .image-preview,
+        .video-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-preview img,
+        .video-preview video {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+        }
+
+        .product-detail {
+            border: 1px solid #eee;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .order-details {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            display: none; /* إخفاء التفاصيل افتراضيًا */
+        }
+
+        .submenu {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .product-image {
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 5px;
+        }
+
+        .delete-image-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        /* أنماط جديدة لتحسين عرض التفاصيل */
+        .details-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .details-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 id="headerTitle">لوحة تحكم المدير - DREAM TIME</h1>
+    </header>
+    <div class="container">
+        <div class="sidebar">
+            <button onclick="toggleSubMenu('home-settings')"><i class="fas fa-cog"></i> إعدادات الصفحة الرئيسية</button>
+            <div class="submenu" id="home-settings-submenu">
+                <button onclick="showSection('add-product')"><i class="fas fa-plus"></i> إضافة منتج جديد</button>
+            </div>
+            <button onclick="showSection('products')"><i class="fas fa-list"></i> إدارة المنتجات</button>
+            <button onclick="showVideoSection()"><i class="fas fa-video"></i> إدارة الفيديوهات</button>
+            <button onclick="showSection('manage-product-images')"><i class="fas fa-images"></i> إدارة صور المنتج</button>
+            <button onclick="showSection('orders')"><i class="fas fa-shopping-cart"></i> عرض طلبات الزبون</button>
+            <button onclick="showCompletedOrders()"><i class="fas fa-check-circle"></i> الطلبات الجاهزة</button>
+        </div>
+        <div class="content" id="mainContent">
+            <h2>مرحبًا بك في لوحة التحكم</h2>
+            <p>اختر خيارًا من القائمة الجانبية لإدارة المتجر.</p>
+        </div>
+    </div>
+
+    <!-- نموذج تعديل المنتج -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <h2>تعديل المنتج</h2>
+            <input type="hidden" id="editProductId" />
+            <div class="form-group">
+                <label>الاسم:</label>
+                <input type="text" id="editName" />
+            </div>
+            <div class="form-group">
+                <label>السعر:</label>
+                <input type="number" id="editPrice" step="0.01" />
+            </div>
+            <div class="form-group">
+                <label>الوصف:</label>
+                <textarea id="editDesc"></textarea>
+            </div>
+            <div class="form-group">
+                <label>النوع:</label>
+                <select id="editType">
+                    <option value="خليجي">خليجي</option>
+                    <option value="عبايات سوداء تقليدي">عبايات سوداء تقليدي</option>
+                    <option value="عبايات تطريز خفيف">عبايات تطريز خفيف</option>
+                    <option value="عبايات ملونة">عبايات ملونة</option>
+                    <option value="عبايات تركية">عبايات تركية</option>
+                    <option value="عبايات مطرزة">عبايات مطرزة</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>رفع صور جديدة:</label>
+                <input type="file" id="editImageFiles" accept="image/*" multiple onchange="previewImages(event, 'editImagePreview')">
+                <div class="image-preview" id="editImagePreview"></div>
+            </div>
+            <div class="form-group">
+                <label>رفع فيديوهات جديدة (اختياري):</label>
+                <input type="file" id="editVideoFiles" accept="video/*" multiple onchange="previewVideos(event, 'editVideosPreview')">
+                <div class="video-preview" id="editVideosPreview"></div>
+            </div>
+            <button onclick="updateProduct()">تحديث المنتج</button>
+        </div>
+    </div>
+
+    <!-- نموذج إدارة صور المنتج -->
+    <div class="modal" id="editImagesModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditImagesModal()">&times;</span>
+            <h2>إدارة صور المنتج</h2>
+            <input type="hidden" id="editImagesProductId" />
+            <div id="currentImagesContainer"></div>
+            <div class="form-group">
+                <label>رفع صور جديدة:</label>
+                <input type="file" id="newImageFiles" accept="image/*" multiple onchange="previewImages(event, 'newImagesPreview')">
+                <div class="image-preview" id="newImagesPreview"></div>
+            </div>
+            <button onclick="saveEditedImages()">حفظ الصور</button>
+        </div>
+    </div>
+
+    <!-- نموذج إدارة فيديوهات المنتج -->
+    <div class="modal" id="editVideosModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditVideosModal()">&times;</span>
+            <h2>إدارة فيديوهات المنتج</h2>
+            <input type="hidden" id="editVideosProductId" />
+            <div id="currentVideosContainer"></div>
+            <div class="form-group">
+                <label>رفع فيديوهات جديدة:</label>
+                <input type="file" id="newVideoFiles" accept="video/*" multiple onchange="previewVideos(event, 'newVideosPreview')">
+                <div class="video-preview" id="newVideosPreview"></div>
+            </div>
+            <button onclick="saveEditedVideos()">حفظ الفيديوهات</button>
+        </div>
+    </div>
+
+    <script>
+        // دوال مساعدة لجلب وتحديث البيانات من/إلى الواجهات البرمجية
+        const API_BASE_URL = 'https://dreamtime-store-api.onrender.com'; // تأكد من مطابقة منفذ الخادم
+
+        let products = [];
+        let orders = [];
+
+        // دوال مساعدة لتحويل الملفات إلى Base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        function previewImages(event, previewId) {
+            const files = event.target.files;
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = '';
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewVideos(event, previewId) {
+            const files = event.target.files;
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = '';
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const video = document.createElement('video');
+                    video.src = e.target.result;
+                    video.controls = true;
+                    video.style.maxWidth = '100px';
+                    video.style.maxHeight = '100px';
+                    preview.appendChild(video);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function fetchProducts() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/products`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                products = await response.json();
+                console.log("Products fetched:", products);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                alert('حدث خطأ أثناء جلب المنتجات.');
+            }
+        }
+
+        async function fetchOrders() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/orders`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                orders = await response.json();
+                console.log("Orders fetched:", orders);
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+                alert('حدث خطأ أثناء جلب الطلبات.');
+            }
+        }
+
+        async function fetchCompletedOrders() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/orders/completed`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const completedOrders = await response.json();
+                console.log("Completed orders fetched:", completedOrders);
+                return completedOrders;
+            } catch (error) {
+                console.error('Error fetching completed orders:', error);
+                alert('حدث خطأ أثناء جلب الطلبات الجاهزة.');
+                return [];
+            }
+        }
+
+        // دوال عرض الأقسام (محدثة لاستخدام البيانات من الخادم)
+        async function showSection(section) {
+            const content = document.getElementById("mainContent");
+            let html = "";
+
+            if (section === 'add-product') {
+                html = `<h2>إضافة منتج جديد</h2>
+                <div class="form-group">
+                    <label>الاسم:</label>
+                    <input type="text" id="newName" placeholder="اسم المنتج" />
+                </div>
+                <div class="form-group">
+                    <label>السعر:</label>
+                    <input type="number" id="newPrice" placeholder="السعر" step="0.01"/>
+                </div>
+                <div class="form-group">
+                    <label>الوصف:</label>
+                    <textarea id="newDesc" placeholder="وصف المنتج"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>النوع:</label>
+                    <select id="newType">
+                        <option value="خليجي">خليجي</option>
+                        <option value="عبايات سوداء تقليدي">عبايات سوداء تقليدي</option>
+                        <option value="عبايات تطريز خفيف">عبايات تطريز خفيف</option>
+                        <option value="عبايات ملونة">عبايات ملونة</option>
+                        <option value="عبايات تركية">عبايات تركية</option>
+                        <option value="عبايات مطرزة">عبايات مطرزة</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>رفع الصور:</label>
+                    <input type="file" id="newImageFiles" accept="image/*" multiple onchange="previewImages(event, 'newImagesPreview')">
+                    <div class="image-preview" id="newImagesPreview"></div>
+                </div>
+                <div class="form-group">
+                    <label>رفع فيديوهات (اختياري):</label>
+                    <input type="file" id="newVideoFiles" accept="video/*" multiple onchange="previewVideos(event, 'newVideosPreview')">
+                    <div class="video-preview" id="newVideosPreview"></div>
+                </div>
+                <button onclick="saveProduct()">حفظ المنتج</button>`;
+            } else if (section === 'products') {
+                await fetchProducts(); // جلب أحدث البيانات
+                html = `<h2>إدارة المنتجات</h2>
+                <table>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>السعر</th>
+                        <th>النوع</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                    ${products.map(product => `
+                        <tr>
+                            <td>${product.name}</td>
+                            <td>${parseFloat(product.price).toFixed(2)} ريال</td>
+                            <td>${product.type}</td>
+                            <td>
+                                <button class="edit" onclick="openEditModal(${product.id})">تعديل</button>
+                                <button class="delete" onclick="deleteProduct(${product.id})">حذف</button>
+                                <button class="view" onclick="editProductImages(${product.id})">إدارة الصور</button>
+                                <button class="view" onclick="editProductVideos(${product.id})">إدارة الفيديوهات</button>
+                            </td>
+                        </tr>
+                    `).join("")}
+                </table>`;
+            } else if (section === 'manage-product-images') {
+                await fetchProducts();
+                html = `<h2>إدارة صور المنتج</h2>
+                <p>اختر منتجًا لإدارة صوره:</p>
+                <div id="productImageList">
+                    ${products.map(product => `
+                        <div style="margin-bottom: 10px;">
+                            <strong>${product.name}</strong>
+                            <button onclick="editProductImages(${product.id})">إدارة الصور</button>
+                        </div>
+                    `).join("")}
+                </div>`;
+            } else if (section === 'orders') {
+                await fetchOrders(); // جلب أحدث البيانات
+                html = `<h2>طلبات الزبون</h2>
+                <table>
+                    <tr>
+                        <th>رقم الطلب</th>
+                        <th>اسم الزبون</th>
+                        <th>طريقة الدفع</th>
+                        <th>المجموع الكلي</th>
+                        <th>المنتجات</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                    ${orders.map(order => {
+                        const items = order.items || [];
+                        let orderTotal = 0;
+                        
+                        // حساب المجموع الكلي للطلب
+                        items.forEach(item => {
+                            const product = products.find(p => p.id === item.product_id);
+                            if (product) {
+                                orderTotal += product.price * item.quantity;
+                            }
+                        });
+
+                        const productsList = items.map(item => {
+                            const product = products.find(p => p.id === item.product_id);
+                            return `
+                                <div class="product-detail">
+                                    <strong>المنتج:</strong> ${product ? product.name : "غير موجود"}<br>
+                                    <strong>الكمية:</strong> ${item.quantity}<br>
+                                    <strong>المقاس:</strong> ${item.size || 'غير محدد'}<br>
+                                    <strong>الموقع:</strong> ${item.location || 'غير محدد'}<br>
+                                    ${product ? `<img src="${product.main_image_url || product.image || (product.images && product.images[0]) || 'https://via.placeholder.com/80'}" alt="صورة المنتج" class="product-image">` : ''}
+                                </div>
+                            `;
+                        }).join("");
+
+                        return `
+                            <tr>
+                                <td>${order.id}</td>
+                                <td>${order.customer_name}</td>
+                                <td>${order.payment_method || 'غير محددة'}</td>
+                                <td>${orderTotal.toFixed(2)} ريال</td>
+                                <td>
+                                    <button class="details-btn" onclick="toggleDetails('${order.id}')">عرض التفاصيل</button>
+                                    <div id="details-${order.id}" class="order-details">
+                                        ${productsList}
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="delete" onclick="deleteOrder('${order.id}')"><i class="fas fa-trash"></i> حذف</button>
+                                    <button class="complete" onclick="markAsCompleted('${order.id}')"><i class="fas fa-check-circle"></i> تم الاستلام</button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join("")}
+                </table>`;
+            } else if (section === 'completed-orders') {
+                // سيتم التعامل مع هذا في showCompletedOrders
+            } else {
+                html = `<h2>مرحبًا بك في لوحة التحكم</h2>
+                <p>اختر خيارًا من القائمة الجانبية لإدارة المتجر.</p>`;
+            }
+            content.innerHTML = html;
+        }
+
+        async function showCompletedOrders() {
+            const content = document.getElementById("mainContent");
+            const completedOrders = await fetchCompletedOrders();
+            await fetchProducts(); // Refresh product data for image URLs
+
+            let html = `<h2>الطلبات الجاهزة</h2>
+            <table>
+                <tr>
+                    <th>رقم الطلب</th>
+                    <th>اسم الزبون</th>
+                    <th>طريقة الدفع</th>
+                    <th>المجموع الكلي</th>
+                    <th>الإجراءات</th>
+                </tr>
+                ${completedOrders.map(order => {
+                    const items = order.items || [];
+                    let orderTotal = 0;
+                    
+                    // حساب المجموع الكلي للطلب
+                    items.forEach(item => {
+                        const product = products.find(p => p.id === item.product_id);
+                        if (product) {
+                            orderTotal += product.price * item.quantity;
+                        }
+                    });
+
+                    const productsList = items.map(item => {
+                        const product = products.find(p => p.id === item.product_id);
+                        return `
+                            <div class="product-detail">
+                                <strong>المنتج:</strong> ${product ? product.name : "غير موجود"}<br>
+                                <strong>الكمية:</strong> ${item.quantity}<br>
+                                <strong>المقاس:</strong> ${item.size || 'غير محدد'}<br>
+                                <strong>الموقع:</strong> ${item.location || 'غير محدد'}<br>
+                                ${product ? `<img src="${product.main_image_url || product.image || (product.images && product.images[0]) || 'https://via.placeholder.com/80'}" alt="صورة المنتج" class="product-image">` : ''}
+                            </div>
+                        `;
+                    }).join("");
+
+                    return `
+                        <tr>
+                            <td>${order.id}</td>
+                            <td>${order.customer_name}</td>
+                            <td>${order.payment_method || 'غير محددة'}</td>
+                            <td>${orderTotal.toFixed(2)} ريال</td>
+                            <td>
+                                <button class="details-btn" onclick="toggleCompletedOrderDetails('${order.id}')">عرض التفاصيل</button>
+                                <div id="completed-details-${order.id}" class="order-details">
+                                    ${productsList}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join("")}
+            </table>`;
+            content.innerHTML = html;
+        }
+
+        // دوال إدارة المنتجات (محدثة)
+        async function saveProduct() {
+            const name = document.getElementById("newName").value;
+            const price = parseFloat(document.getElementById("newPrice").value);
+            const desc = document.getElementById("newDesc").value;
+            const type = document.getElementById("newType").value;
+            const imageFiles = document.getElementById("newImageFiles").files;
+            const videoFiles = document.getElementById("newVideoFiles").files;
+
+            if (!name || isNaN(price)) {
+                alert("يرجى ملء جميع الحقول المطلوبة.");
+                return;
+            }
+
+            try {
+                const images = await Promise.all(Array.from(imageFiles).map(fileToBase64));
+                const videos = await Promise.all(Array.from(videoFiles).map(fileToBase64));
+
+                const productData = {
+                    name,
+                    price,
+                    description: desc,
+                    type,
+                    images: images,
+                    videos: videos,
+                    main_image_url: images.length > 0 ? images[0] : null
+                };
+
+                const response = await fetch(`${API_BASE_URL}/api/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                if (response.ok) {
+                    alert("تم حفظ المنتج بنجاح!");
+                    showSection('products');
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error saving product:', errorData);
+                    alert('حدث خطأ أثناء حفظ المنتج: ' + (errorData.error || ''));
+                }
+            } catch (error) {
+                console.error('Error processing files:', error);
+                alert('حدث خطأ أثناء معالجة الملفات.');
+            }
+        }
+
+        function openEditModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                alert("المنتج غير موجود!");
+                return;
+            }
+
+            document.getElementById("editProductId").value = product.id;
+            document.getElementById("editName").value = product.name;
+            document.getElementById("editPrice").value = product.price;
+            document.getElementById("editDesc").value = product.description || '';
+            document.getElementById("editType").value = product.type;
+
+            const preview = document.getElementById("editImagePreview");
+            preview.innerHTML = "";
+            if (product.images && product.images.length > 0) {
+                product.images.forEach(src => {
+                    const img = document.createElement("img");
+                    img.src = src;
+                    img.style.maxWidth = "100px";
+                    preview.appendChild(img);
+                });
+            }
+
+            const videoPreview = document.getElementById("editVideosPreview");
+            videoPreview.innerHTML = "";
+            if (product.videos && product.videos.length > 0) {
+                product.videos.forEach(src => {
+                    const video = document.createElement("video");
+                    video.src = src;
+                    video.controls = true;
+                    video.style.maxWidth = "100px";
+                    video.style.maxHeight = "100px";
+                    videoPreview.appendChild(video);
+                });
+            }
+
+            document.getElementById("editModal").style.display = "block";
+        }
+
+        function closeEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+        async function updateProduct() {
+            const id = document.getElementById("editProductId").value;
+            const name = document.getElementById("editName").value;
+            const price = parseFloat(document.getElementById("editPrice").value);
+            const desc = document.getElementById("editDesc").value;
+            const type = document.getElementById("editType").value;
+            const imageFiles = document.getElementById("editImageFiles").files;
+            const videoFiles = document.getElementById("editVideoFiles").files;
+
+            if (!name || isNaN(price)) {
+                alert("يرجى ملء جميع الحقول المطلوبة.");
+                return;
+            }
+
+            const currentProduct = products.find(p => p.id == id);
+            if (!currentProduct) {
+                alert("المنتج غير موجود!");
+                return;
+            }
+
+            try {
+                let updatedImages = currentProduct.images || [];
+                let updatedVideos = currentProduct.videos || [];
+
+                if (imageFiles.length > 0) {
+                    const newImages = await Promise.all(Array.from(imageFiles).map(fileToBase64));
+                    updatedImages = [...updatedImages, ...newImages];
+                }
+
+                if (videoFiles.length > 0) {
+                    const newVideos = await Promise.all(Array.from(videoFiles).map(fileToBase64));
+                    updatedVideos = [...updatedVideos, ...newVideos];
+                }
+
+                const productData = {
+                    name,
+                    price,
+                    description: desc,
+                    type,
+                    main_image_url: updatedImages.length > 0 ? updatedImages[0] : currentProduct.main_image_url,
+                    images: updatedImages,
+                    videos: updatedVideos
+                };
+
+                const response = await fetch(`${API_BASE_URL}/api/products/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                if (response.ok) {
+                    alert("تم تحديث المنتج!");
+                    closeEditModal();
+                    showSection('products');
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error updating product:', errorData);
+                    alert('حدث خطأ أثناء تحديث المنتج: ' + (errorData.error || ''));
+                }
+            } catch (error) {
+                console.error('Error processing files:', error);
+                alert('حدث خطأ أثناء معالجة الملفات.');
+            }
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm("هل أنت متأكد من حذف هذا المنتج؟")) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert("تم حذف المنتج بنجاح!");
+                    showSection('products');
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error deleting product:', errorData);
+                    alert('حدث خطأ أثناء حذف المنتج: ' + (errorData.error || ''));
+                }
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                alert('فشل الاتصال بالخادم.');
+            }
+        }
+
+        // دوال إدارة الصور
+        async function editProductImages(productId) {
+            await fetchProducts(); // Refresh product data
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                alert("المنتج غير موجود!");
+                return;
+            }
+
+            document.getElementById("editImagesProductId").value = product.id;
+
+            const container = document.getElementById("currentImagesContainer");
+            container.innerHTML = "<h3>الصور الحالية:</h3>";
+            if (product.images && product.images.length > 0) {
+                const imageGrid = document.createElement("div");
+                imageGrid.className = "image-preview";
+                product.images.forEach((src, index) => {
+                    const imgContainer = document.createElement("div");
+                    imgContainer.style.position = "relative";
+                    imgContainer.style.display = "inline-block";
+                    const img = document.createElement("img");
+                    img.src = src;
+                    img.style.maxWidth = "100px";
+                    img.style.maxHeight = "100px";
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.className = "delete-image-btn";
+                    deleteBtn.textContent = "حذف";
+                    deleteBtn.onclick = () => deleteImage(productId, index);
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(deleteBtn);
+                    imageGrid.appendChild(imgContainer);
+                });
+                container.appendChild(imageGrid);
+            } else {
+                container.innerHTML += "<p>لا توجد صور حالياً.</p>";
+            }
+
+            document.getElementById("newImagesPreview").innerHTML = "";
+            document.getElementById("editImagesModal").style.display = "block";
+        }
+
+        function closeEditImagesModal() {
+            document.getElementById("editImagesModal").style.display = "none";
+        }
+
+        async function deleteImage(productId, imageIndex) {
+            if (!confirm("هل أنت متأكد من حذف هذه الصورة؟")) return;
+
+            try {
+                await fetchProducts(); // Refresh product data
+                const product = products.find(p => p.id === productId);
+                if (!product) {
+                    alert("المنتج غير موجود!");
+                    return;
+                }
+
+                const updatedImages = product.images.filter((_, i) => i !== imageIndex);
+                const response = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ...product,
+                        images: updatedImages,
+                        main_image_url: updatedImages.length > 0 ? updatedImages[0] : null
+                    })
+                });
+
+                if (response.ok) {
+                    alert("تم حذف الصورة بنجاح!");
+                    editProductImages(productId); // Refresh the modal
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error deleting image:', errorData);
+                    alert('حدث خطأ أثناء حذف الصورة: ' + (errorData.error || ''));
+                }
+            } catch (error) {
+                console.error('Error deleting image:', error);
+                alert('حدث خطأ أثناء حذف الصورة.');
+            }
+        }
+
+        async function saveEditedImages() {
+            const productId = parseInt(document.getElementById("editImagesProductId").value);
+            await fetchProducts(); // Refresh product data
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                alert("المنتج غير موجود!");
+                return;
+            }
+
+            const newImageFiles = document.getElementById("newImageFiles").files;
+            if (newImageFiles.length > 0) {
+                try {
+                    const newImages = await Promise.all(Array.from(newImageFiles).map(fileToBase64));
+                    const updatedImages = [...(product.images || []), ...newImages];
+
+                    const response = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            ...product,
+                            images: updatedImages,
+                            main_image_url: updatedImages.length > 0 ? updatedImages[0] : null
+                        })
+                    });
+
+                    if (response.ok) {
+                        alert("تم تحديث الصور بنجاح!");
+                        closeEditImagesModal();
+                        showSection('manage-product-images');
+                    } else {
+                        const errorData = await response.json();
+                        console.error('Error saving images:', errorData);
+                        alert('حدث خطأ أثناء تحديث الصور: ' + (errorData.error || ''));
+                    }
+                } catch (error) {
+                    console.error('Error processing images:', error);
+                    alert('حدث خطأ أثناء معالجة الصور.');
+                }
+            } else {
+                alert("لم يتم إضافة صور جديدة.");
+            }
+        }
+
+        // دوال إدارة الفيديوهات
+        async function showVideoSection() {
+            await fetchProducts(); // Refresh product data
+            const content = document.getElementById("mainContent");
+            let html = `
+                <h2>إدارة الفيديوهات</h2>
+                <p>اختر منتجًا لإدارة فيديوهاته:</p>
+                <div id="productVideoList">
+                    ${products.map(product => `
+                        <div style="margin-bottom: 10px;">
+                            <strong>${product.name}</strong>
+                            <button onclick="editProductVideos(${product.id})">إدارة الفيديوهات</button>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+            content.innerHTML = html;
+        }
+
+        async function editProductVideos(productId) {
+            await fetchProducts(); // Refresh product data
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                alert("المنتج غير موجود!");
+                return;
+            }
+
+            document.getElementById("editVideosProductId").value = product.id;
+
+            const container = document.getElementById("currentVideosContainer");
+            container.innerHTML = "<h3>الفيديوهات الحالية:</h3>";
+            if (product.videos && product.videos.length > 0) {
+                const videoGrid = document.createElement("div");
+                videoGrid.className = "video-preview";
+                product.videos.forEach(src => {
+                    const video = document.createElement("video");
+                    video.src = src;
+                    video.controls = true;
+                    video.style.maxWidth = "100px";
+                    video.style.maxHeight = "100px";
+                    videoGrid.appendChild(video);
+                });
+                container.appendChild(videoGrid);
+            } else {
+                container.innerHTML += "<p>لا توجد فيديوهات حالياً.</p>";
+            }
+
+            document.getElementById("newVideosPreview").innerHTML = "";
+            document.getElementById("editVideosModal").style.display = "block";
+        }
+
+        function closeEditVideosModal() {
+            document.getElementById("editVideosModal").style.display = "none";
+        }
+
+        async function saveEditedVideos() {
+            const productId = parseInt(document.getElementById("editVideosProductId").value);
+            await fetchProducts(); // Refresh product data
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                alert("المنتج غير موجود!");
+                return;
+            }
+
+            const newVideoFiles = document.getElementById("newVideoFiles").files;
+            if (newVideoFiles.length > 0) {
+                try {
+                    const newVideos = await Promise.all(Array.from(newVideoFiles).map(fileToBase64));
+                    const updatedVideos = [...(product.videos || []), ...newVideos];
+
+                    const response = await fetch(`${API_BASE_URL}/api/products/${productId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            ...product,
+                            videos: updatedVideos
+                        })
+                    });
+
+                    if (response.ok) {
+                        alert("تم تحديث الفيديوهات بنجاح!");
+                        closeEditVideosModal();
+                        showVideoSection();
+                    } else {
+                        const errorData = await response.json();
+                        console.error('Error saving videos:', errorData);
+                        alert('حدث خطأ أثناء تحديث الفيديوهات: ' + (errorData.error || ''));
+                    }
+                } catch (error) {
+                    console.error('Error processing videos:', error);
+                    alert('حدث خطأ أثناء معالجة الفيديوهات.');
+                }
+            } else {
+                alert("لم يتم إضافة فيديوهات جديدة.");
+            }
+        }
+
+        // دوال إدارة الطلبات
+        async function deleteOrder(orderId) {
+            if (!confirm("هل أنت متأكد من حذف هذا الطلب؟")) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert("تم حذف الطلب بنجاح!");
+                    showSection('orders');
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error deleting order:', errorData);
+                    alert('حدث خطأ أثناء حذف الطلب: ' + (errorData.error || ''));
+                }
+            } catch (error) {
+                console.error('Error deleting order:', error);
+                alert('فشل الاتصال بالخادم.');
+            }
+        }
+
+        async function markAsCompleted(orderId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}/complete`, {
+                    method: 'PUT'
+                });
+
+                if (response.ok) {
+                    alert("تم وضع علامة \"جاهز\" على الطلب!");
+                    showSection('orders');
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error marking order as completed:', errorData);
+                    alert('حدث خطأ أثناء تحديث الطلب: ' + (errorData.error || ''));
+                }
+            } catch (error) {
+                console.error('Error marking order as completed:', error);
+                alert('فشل الاتصال بالخادم.');
+            }
+        }
+
+        function toggleDetails(orderId) {
+            const details = document.getElementById(`details-${orderId}`);
+            if (details.style.display === "none" || details.style.display === "") {
+                details.style.display = "block";
+            } else {
+                details.style.display = "none";
+            }
+        }
+
+        function toggleCompletedOrderDetails(orderId) {
+            const details = document.getElementById(`completed-details-${orderId}`);
+            if (details.style.display === "none" || details.style.display === "") {
+                details.style.display = "block";
+            } else {
+                details.style.display = "none";
+            }
+        }
+
+        // دوال إدارة القائمة الجانبية
+        function toggleSubMenu(submenuId) {
+            const submenu = document.getElementById(submenuId + "-submenu");
+            if (submenu.style.display === "block") {
+                submenu.style.display = "none";
+            } else {
+                submenu.style.display = "block";
+            }
+        }
+
+        // تحميل البيانات الأولية عند بدء التشغيل
+        window.addEventListener('DOMContentLoaded', async () => {
+            await fetchProducts(); // جلب المنتجات عند التحميل
+            await fetchOrders(); // جلب الطلبات عند التحميل
+            // لا حاجة لجلب الطلبات المكتملة حتى يتم طلبها
+        });
+    </script>
+</body>
+
+</html>yle.display = "none";
+            }
+        }
+
+        function toggleCompletedOrderDetails(orderId) {
+            const details = document.getElementById(`completed-details-${orderId}`);
+            if (details.style.display === "none" || details.style.display === "") {
+                details.style.display = "block";
+            } else {
+                details.style.display = "none";
+            }
+        }
+
+        // دوال إدارة القائمة الجانبية
+        function toggleSubMenu(submenuId) {
+            const submenu = document.getElementById(submenuId + "-submenu");
+            if (submenu.style.display === "block") {
+                submenu.style.display = "none";
+            } else {
+                submenu.style.display = "block";
+            }
+        }
+
+        // تحميل البيانات الأولية عند بدء التشغيل
+        window.addEventListener('DOMContentLoaded', async () => {
+            await fetchProducts(); // جلب المنتجات عند التحميل
+            await fetchOrders(); // جلب الطلبات عند التحميل
+            // لا حاجة لجلب الطلبات المكتملة حتى يتم طلبها
+        });
+    </script>
+</body>
+
+</html>

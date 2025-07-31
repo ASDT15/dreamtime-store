@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>DREAM TIME - عبايات</title>
+  <style>
+    /* Reset and Base Styles */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #000000, #f5f4f5);
+      color: #ffffff;
+      transition: background-color 0.3s ease;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    img,
+    video {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    input,
+    button {
+      outline: none;
+    }
+
+    :root {
+      --bg-dark: #000000d8;
+      --text-light: #ffffffd0;
+      --btn-bg: #ffeaf898;
+      --btn-hover: #ffffff;
+      --input-border: #ff72d0;
+      --search-bg: #fffdfd;
+      --search-text: rgb(0, 0, 0);
+      --link-color: #1e90ff;
+      --section-title-color: #ffffff;
+      --card-bg: #ffffff;
+      --card-border: #ff8ae8;
+      --footer-bg: linear-gradient(to right, var(--bg-dark), var(--btn-bg));
+    }
+
+    /* Background Pattern */
+    .cartoon-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/cubes.png'), #000000;
+      opacity: 0.3;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Overlay Loader */
+    #loader {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(3, 3, 3, 0.7);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .loader-content {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .loader-image {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      /* تسريع التحريك */
+      animation: spin-image 0.8s linear infinite;
+    }
+
+    /* تسريع التحريك */
+    @keyframes spin-image {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loader-text {
+      font-size: 18px;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* Header Styles */
+    header {
+      background: linear-gradient(to right, var(--bg-dark), var(--btn-bg));
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .logo-container img {
+      width: 70px;
+      height: auto;
+    }
+
+    .logo-texts {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-texts h1 {
+      font-size: 1.4rem;
+      margin: 0;
+      color: #ffffff;
+    }
+
+    .logo-texts h2 {
+      font-size: 1rem;
+      margin: 0;
+      color: #ffffff;
+      opacity: 0.9;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 400px;
+      position: relative;
+      min-width: 200px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px 40px 10px 15px;
+      border: 2px solid var(--input-border);
+      background-color: var(--search-bg);
+      color: var(--search-text);
+      border-radius: 30px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-bar input:focus {
+      background-color: white;
+      border-color: #6d4ff0;
+      box-shadow: 0 0 0 3px rgba(109, 79, 240, 0.2);
+    }
+
+    .search-bar svg {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      color: var(--btn-bg);
+      width: 20px;
+      height: 20px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-shrink: 0;
+    }
+
+    #soundButton {
+      padding: 8px 12px;
+      background-color: #fdd7e6;
+      color: rgb(61, 54, 54);
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    #soundButton:hover {
+      background-color: #e7c2d3;
+    }
+
+    .order-status-btn {
+      background: transparent;
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .order-status-btn:hover {
+      background: #fffeff;
+      color: #000000;
+    }
+
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      transition: background-color 0.3s ease;
+    }
+
+    .cart-icon:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .cart-icon svg {
+      width: 24px;
+      height: 24px;
+      color: white;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 10px;
+      min-width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* إظهار نص العربة دائمًا */
+    .cart-label {
+      font-size: 13px;
+      color: #ffffff;
+      font-weight: normal;
+      display: inline; /* تغيير من none إلى inline */
+    }
+
+    /* Main Content */
+    main {
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+      color: var(--section-title-color);
+    }
+
+    .section-description {
+      text-align: center;
+      color: #ff7dee;
+      margin: 0 auto 25px;
+      font-size: 1rem;
+      max-width: 800px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-type {
+      padding: 10px 15px;
+      border: 1px solid #ff8ae8;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #ffffff;
+    }
+
+    .filter-type:hover,
+    .filter-type.active {
+      background: var(--btn-bg);
+      color: #000000;
+      border-color: var(--btn-bg);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    /* Product Card */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .image-container {
+      position: relative;
+      overflow: hidden;
+      /* تكبير الصور */
+      height: 300px; /* زيادة الارتفاع */
+    }
+
+    /* تكبير الصور - عرض كامل بدون قطع */
+   /* عرض الصور بدون قص أو تغيير نسبة العرض إلى الارتفاع */
+.card img {
+  width: 100%;
+  height: 100%;
+  /* استخدام scale-down للحفاظ على Aspect Ratio وتجنب القص */
+  object-fit: scale-down;
+  transition: transform 0.5s ease;
+  background-color: #f9f9f9; /* خلفية بيضاء للصور الشفافة */
+  /* إزالة transform: scale(1.05); من :hover لمنع التكبير الذي قد يؤدي لقص جزء من الصورة الكبيرة */
+}
+
+ 
+
+    .image-loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f5f5f5;
+    }
+
+    .image-loader::before {
+      content: "جارٍ التحميل...";
+      color: #666;
+      font-size: 14px;
+    }
+
+    .card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: #333;
+      margin-bottom: 15px;
+      flex-grow: 1;
+    }
+
+    .card-price {
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    /* Size Controls */
+    .size-controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .size-btn {
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      background-color: #f0f0f0;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .size-btn:hover {
+      background-color: #e0e0e0;
+    }
+
+    .size-btn.active {
+      background-color: var(--btn-bg);
+      color: white;
+      border-color: var(--btn-bg);
+    }
+
+    .add-to-cart {
+      background: var(--btn-bg);
+      color: rgb(0, 0, 0);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      width: 100%;
+      font-size: 1rem;
+      margin-top: auto;
+    }
+
+    .add-to-cart:hover {
+      background: var(--btn-hover);
+      box-shadow: 0 4px 12px rgba(255, 120, 226, 0.4);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--footer-bg);
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--text-dark);
+      margin-top: 40px;
+    }
+
+    footer h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    footer p {
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+
+    footer a {
+      color: var(--link-color);
+      margin: 0 15px;
+      display: inline-block;
+      padding: 8px 0;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Cart Modal */
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .cart-modal-content {
+      background: #090909;
+      padding: 30px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .cart-modal-content h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .cart-items-scroll {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+       /* تغيير من cover إلى contain أو scale-down */
+  object-fit: contain; /* أو استخدم scale-down */
+  border-radius: 10px;
+  flex-shrink: 0;
+  /* تحديد لون خلفية للصور الشفافة إن وجدت */
+  background-color: #f9f9f9;
+    }
+
+    .cart-item-name {
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .quantity-input {
+      width: 40px;
+      text-align: center;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    .quantity-btn {
+      background: var(--btn-bg);
+      color: #000000;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+
+    .quantity-btn:hover {
+      background: var(--btn-hover);
+    }
+
+    .cart-total {
+      margin: 20px 0;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--btn-bg);
+      text-align: center;
+    }
+
+    .cart-close {
+      background: var(--btn-bg);
+      color: #000000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .cart-close:hover {
+      background: var(--btn-hover);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .cart-close.red {
+      background: #ff4d4d;
+      color: white;
+    }
+
+    .cart-close.red:hover {
+      background: #ff1a1a;
+    }
+
+    .send-order-btn {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: background 0.3s ease;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .send-order-btn:hover {
+      background: #45a049;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 15px;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .logo-container {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .search-bar {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* إظهار نص العربة دائمًا */
+      .cart-label {
+        display: inline;
+      }
+
+      .filters {
+        gap: 8px;
+      }
+
+      .filter-type {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+
+      .grid {
+          grid-template-columns: repeat(2, 1fr); /* 2 أعمدة */
+    gap: 15px; /* تقليل المسافة بين العناصر قليلاً */
+      }
+
+      .card-body {
+        padding: 15px;
+      }
+
+      .card-title {
+        font-size: 1.1rem;
+      }
+
+      .size-btn {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+      }
+
+      .add-to-cart {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+      }
+
+      footer h1 {
+        font-size: 1.8rem;
+      }
+
+      footer a {
+        margin: 0 10px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      main {
+        padding: 15px;
+      }
+
+      .section-title {
+        font-size: 1.3rem;
+      }
+
+      .section-description {
+        font-size: 0.9rem;
+      }
+
+      .filters {
+        gap: 6px;
+      }
+
+      .filter-type {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 أعمدة */
+    gap: 15px; /* تقليل المسافة بين العناصر قليلاً */
+      }
+
+      .image-container {
+        /* تكبير الصور */
+        height: 250px; /* زيادة الارتفاع */
+      }
+
+      .cart-modal-content {
+        padding: 20px 15px;
+        border-radius: 15px;
+      }
+
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: center;
+      }
+
+      .cart-item img {
+        width: 100%;
+        max-width: 150px;
+        height: auto;
+
+      }
+
+      .quantity-controls {
+        justify-content: center;
+        width: 100%;
+      }
+
+      footer {
+        padding: 20px 15px;
+      }
+
+      footer h1 {
+        font-size: 1.5rem;
+      }
+
+      footer p {
+        font-size: 0.9rem;
+      }
+
+      footer a {
+        display: block;
+        margin: 5px 0;
+      }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cart-item {
+      animation: fadeInUp 0.3s ease forwards;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+</head>
+
+<body>
+  <!-- Background Pattern -->
+  <div class="cartoon-bg"></div>
+
+  <!-- Overlay Loader -->
+  <div id="loader">
+    <div class="loader-content">
+      <img src="LOGO.png" alt="تحميل" class="loader-image">
+      <div class="loader-text">جاري التحميل...</div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="logo-container">
+        <img src="LOGO.png" alt="شعار DREAM TIME">
+        <div class="logo-texts">
+          <h1>عبايات</h1>
+          <h2>DREAM TIME</h2>
+        </div>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="البحث على عبايتكم..." onkeyup="debouncedFilterProducts()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path fill="var(--btn-bg)"
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+        </svg>
+      </div>
+
+      <div class="header-actions">
+        <button class="order-status-btn" onclick="window.location.href='order-status.html'">
+          حالة الطلب
+        </button>
+
+        <button id="soundButton">🔇 فتح الصوت</button>
+
+        <div class="cart-icon" onclick="toggleCart()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path fill="white" d="M15 1H3v2h12V1zm0 18H3v-2h12v2zm6-7H3V5h18v2zM6 7h12v2H6V7z" />
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+          <!-- إظهار نص العربة دائمًا -->
+          <span class="cart-label">عربة التسوق</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="section-title">أهلن بك في عالم الرقة والأنوثة</div>
+    <div class="section-description">اكتشفي تشكيلتنا المختارة من العبايات الفخمة: خامات فاخرة، تطريز راقٍ، توصيل سريع.</div>
+
+    <div class="filters">
+      <button class="filter-type active" onclick="filterProductsByType('')">الكل</button>
+      <button class="filter-type" onclick="filterProductsByType('خليجي')">عبايات خليجي</button>
+      <button class="filter-type" onclick="filterProductsByType('عبايات سوداء تقليدي')">عبايات سوداء تقليدي</button>
+      <button class="filter-type" onclick="filterProductsByType('عبايات تطريز خفيف')">عبايات تطريز خفيف</button>
+      <button class="filter-type" onclick="filterProductsByType('عبايات ملونة')">عبايات ملونة</button>
+      <button class="filter-type" onclick="filterProductsByType('عبايات تركية')">عبايات تركية</button>
+      <button class="filter-type" onclick="filterProductsByType('عبايات مطرزة')">عبايات مطرزة</button>
+    </div>
+
+    <div class="grid" id="productGrid"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <h1>DREAM TIME</h1>
+    <p>عبايات من عالم الأناقة والأنوثة</p>
+    <div>
+      <a href="#">الرئيسية</a>
+    </div>
+    <p>&copy; 2025 DREAM TIME. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- Cart Modal -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-modal-content">
+      <h2>عربة التسوق الخاصة بك</h2>
+      <div id="cartItems" class="cart-items-scroll"></div>
+      <div class="cart-total" id="cartTotal">الإجمالي: 0 ريال يمني</div>
+      <button class="send-order-btn" onclick="initiateCheckout()">إتمام الطلب</button>
+      <button class="cart-close red" onclick="emptyCart()">تفريغ العربة</button>
+      <button class="cart-close" onclick="toggleCart()">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- Audio Elements -->
+  <audio id="backgroundAudio" src="NA.mp3" muted></audio>
+  <audio id="addSound" src="athfo.mp3"></audio>
+  <audio id="sendSound" src="arsal.mp3"></audio>
+  <audio id="emptySound" src="tvrug.mp3"></audio>
+
+  <!-- Login Modal (if needed) -->
+  <div id="loginModal" class="cart-modal">
+    <div class="cart-modal-content">
+      <h2>تسجيل الدخول</h2>
+      <p>يرجى إدخال رقم هاتفك:</p>
+      <input type="tel" id="phoneNumberInput" placeholder="رقم الهاتف"
+        style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc;" />
+      <button onclick="sendVerificationCode()"
+        style="background: var(--btn-bg); color: #000; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; margin: 10px 0;">إرسال
+        رمز التحقق</button>
+      <div id="verificationContainer" style="display:none;">
+        <p>أدخل رمز التحقق الذي تم إرساله إلى هاتفك:</p>
+        <input type="text" id="verificationCodeInput" placeholder="رمز التحقق (4 أرقام)"
+          style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc;" />
+        <button onclick="verifyUser()"
+          style="background: var(--btn-bg); color: #000; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; margin: 10px 0;">تأكيد</button>
+      </div>
+      <button onclick="document.getElementById('loginModal').style.display='none'"
+        style="background: #666; color: #fff; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%;">إلغاء</button>
+    </div>
+  </div>
+
+  <script>
+    // Utility Functions
+    const API_BASE_URL = 'http://localhost:3000';
+    const STORAGE_KEY = "dreamtime_cart";
+    let products = [];
+    let soundEnabled = false;
+
+    // تأكد من أن الصوت مكتوم عند تحميل الصفحة
+    document.addEventListener("DOMContentLoaded", function () {
+      const audio = document.getElementById('backgroundAudio');
+      if (audio) {
+        audio.muted = true; // كتم الصوت افتراضيًا
+      }
+    });
+
+    // Show/Hide Loader
+    function showLoader() {
+      document.getElementById("loader").style.display = 'flex';
+    }
+
+    function hideLoader() {
+      document.getElementById("loader").style.display = 'none';
+    }
+
+    // Cart Functions
+    function getCart() {
+      const cartStr = localStorage.getItem(STORAGE_KEY);
+      return cartStr ? JSON.parse(cartStr) : [];
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    }
+
+    function updateCartCount() {
+      const countEl = document.getElementById("cartCount");
+      if (countEl) {
+        const totalItems = getCart().reduce((sum, item) => sum + item.quantity, 0);
+        countEl.textContent = totalItems;
+      }
+    }
+
+    function addToCart(productId, size) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+      if (!size) {
+        alert("الرجاء اختيار مقاس.");
+        return;
+      }
+
+      document.getElementById("addSound").play().catch(e => console.log("Audio play failed:", e));
+      let cart = getCart();
+      const existingItem = cart.find(item => item.id === product.id);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+        existingItem.size = size;
+      } else {
+        cart.push({ ...product, quantity: 1, size: size });
+      }
+
+      saveCart(cart);
+      updateCartCount();
+      updateCartUI();
+    }
+
+    function changeQuantity(productId, delta) {
+      let cart = getCart();
+      const itemIndex = cart.findIndex(item => item.id === productId);
+      if (itemIndex !== -1) {
+        cart[itemIndex].quantity += delta;
+        if (cart[itemIndex].quantity <= 0) {
+          cart.splice(itemIndex, 1);
+        }
+        saveCart(cart);
+        updateCartCount();
+        updateCartUI();
+      }
+    }
+
+    function changeSize(productId, newSize) {
+      let cart = getCart();
+      const itemIndex = cart.findIndex(item => item.id === productId);
+      if (itemIndex !== -1) {
+        cart[itemIndex].size = newSize;
+        saveCart(cart);
+        updateCartUI();
+      }
+    }
+
+    function updateCartUI() {
+      const cartItemsContainer = document.getElementById("cartItems");
+      const cartTotal = document.getElementById("cartTotal");
+      if (!cartItemsContainer || !cartTotal) return;
+
+      const cart = getCart();
+      cartItemsContainer.innerHTML = "";
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p style='text-align:center;color:#fff;'>عربتك فارغة</p>";
+        cartTotal.textContent = "الإجمالي: 0 ريال يمني";
+        return;
+      }
+
+      cart.forEach((item) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "cart-item";
+        itemDiv.setAttribute('data-id', item.id);
+        itemDiv.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div style="flex-grow:1;">
+            <span class="cart-item-name">${item.name}</span>
+            <div class="size-controls">
+              <button class="size-btn ${item.size === 'S' ? 'active' : ''}" onclick="changeSize(${item.id}, 'S')">S</button>
+              <button class="size-btn ${item.size === 'M' ? 'active' : ''}" onclick="changeSize(${item.id}, 'M')">M</button>
+              <button class="size-btn ${item.size === 'L' ? 'active' : ''}" onclick="changeSize(${item.id}, 'L')">L</button>
+              <button class="size-btn ${item.size === 'XL' ? 'active' : ''}" onclick="changeSize(${item.id}, 'XL')">XL</button>
+            </div>
+            <div class="quantity-controls">
+              <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+              <input type="text" class="quantity-input" value="${item.quantity}" readonly>
+              <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+            </div>
+          </div>
+          <div style="text-align:left;"><span>ريال يمني ${Math.round(item.price * item.quantity)}</span></div>
+        `;
+        cartItemsContainer.appendChild(itemDiv);
+        total += item.price * item.quantity;
+      });
+
+      cartTotal.textContent = "الإجمالي: " + Math.round(total) + " ريال يمني";
+    }
+
+    function emptyCart() {
+      localStorage.removeItem(STORAGE_KEY);
+      updateCartCount();
+      updateCartUI();
+      document.getElementById("emptySound").play().catch(e => console.log("Audio play failed:", e));
+    }
+
+    function toggleCart() {
+      const modal = document.getElementById('cartModal');
+      modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+      updateCartUI();
+    }
+
+    // Product Functions
+    function selectSize(productId, size, button) {
+      // Remove active class from all buttons for this product
+      const buttons = document.querySelectorAll(`.size-controls[data-product-id="${productId}"] .size-btn`);
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      // Add active class to clicked button
+      button.classList.add('active');
+
+      // Store selected size in card dataset
+      const card = button.closest('.card');
+      if (card) {
+        card.dataset.selectedSize = size;
+      }
+    }
+
+    function renderProducts(filteredProducts = products) {
+      const grid = document.getElementById('productGrid');
+      if (!grid) return;
+
+      grid.innerHTML = '';
+
+      if (filteredProducts.length === 0) {
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#fff;font-size:1.2rem;">لا توجد منتجات مطابقة</p>';
+        return;
+      }
+
+      filteredProducts.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.selectedSize = 'M'; // Default size
+
+        card.innerHTML = `
+          <a href="product.html?id=${product.id}">
+            <div class="image-container">
+              <div class="image-loader"></div>
+              <img src="${product.image}" alt="${product.name}" 
+                   onerror="this.previousElementSibling.style.display='flex';this.style.display='none';" 
+                   onload="this.previousElementSibling.style.display='none';">
+            </div>
+          </a>
+          <div class="card-body">
+            <div class="card-title">${product.name}</div>
+            <div class="card-desc">${product.description || "وصف المنتج غير متوفر"}</div>
+            <div class="card-price">ريال يمني ${Math.round(product.price)}</div>
+            <div class="size-controls" data-product-id="${product.id}">
+              <button class="size-btn" onclick="selectSize(${product.id}, 'S', this)">S</button>
+              <button class="size-btn active" onclick="selectSize(${product.id}, 'M', this)">M</button>
+              <button class="size-btn" onclick="selectSize(${product.id}, 'L', this)">L</button>
+              <button class="size-btn" onclick="selectSize(${product.id}, 'XL', this)">XL</button>
+            </div>
+            <button class="add-to-cart" onclick="addToCart(${product.id}, this.closest('.card').dataset.selectedSize)">أضف إلى السلة</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Filtering Functions
+    function filterProducts() {
+      const searchInput = document.getElementById("searchInput").value.toLowerCase();
+      const filtered = products.filter(product =>
+        product.name.toLowerCase().includes(searchInput)
+      );
+      renderProducts(filtered);
+    }
+
+    function filterProductsByType(type) {
+      // Update active filter button
+      document.querySelectorAll('.filter-type').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      const filtered = type === '' ? products : products.filter(product => product.type === type);
+      renderProducts(filtered);
+    }
+
+    // Debounced search for better performance
+    let searchTimeout;
+    function debouncedFilterProducts() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(filterProducts, 300);
+    }
+
+    // Fetch Products with Caching
+    async function fetchProducts() {
+      showLoader();
+
+      // Try to get from cache first
+      const cachedData = localStorage.getItem('dreamtime_products_cache');
+      const cacheTime = localStorage.getItem('dreamtime_products_cache_time');
+      const now = new Date().getTime();
+      const cacheExpiry = 5 * 60 * 1000; // 5 minutes
+
+      if (cachedData && cacheTime && (now - parseInt(cacheTime) < cacheExpiry)) {
+        try {
+          products = JSON.parse(cachedData);
+          renderProducts();
+          updateCartCount();
+          console.log("Products loaded from cache");
+          hideLoader(); // إخفاء شريط التحميل بعد تحميل البيانات من الكاش
+        } catch (e) {
+          console.error("Cache parsing error:", e);
+          hideLoader(); // إخفاء شريط التحميل حتى في حالة الخطأ
+        }
+        return; // إنهاء الدالة لأن البيانات تم تحميلها من الكاش
+      }
+
+      // Always try to fetch fresh data
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+
+        const response = await fetch(`${API_BASE_URL}/api/products`, {
+          signal: controller.signal,
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const fetchedProducts = await response.json();
+        products = fetchedProducts.map(product => ({
+          id: product.id,
+          name: product.name,
+          price: parseFloat(product.price) || 0,
+          description: product.description || "",
+          image: product.main_image_url || (product.images && product.images[0]) || product.image || "placeholder.jpg",
+          type: product.type || "غير مصنف"
+        }));
+
+        // Save to cache
+        localStorage.setItem('dreamtime_products_cache', JSON.stringify(products));
+        localStorage.setItem('dreamtime_products_cache_time', now.toString());
+
+        renderProducts();
+        console.log("Products fetched from server");
+        hideLoader(); // إخفاء شريط التحميل بعد جلب البيانات الجديدة
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.warn('Request timeout');
+        } else {
+          console.error('Fetch error:', error);
+        }
+
+        // If no cache, use fallback
+        if (!cachedData) {
+          products = [
+            { id: 1, name: "عباية خليجية فاخرة", price: 10000, image: "صور المنتجات/خليجي/a.jpg", description: "عباية ذات خامة ناعمة مثل الحرير.", type: "خليجي" },
+            { id: 2, name: "عباية سوداء كلاسيكية", price: 7500, image: "صور المنتجات/عبايات سوداء تقليدي/a.jpg", description: "تصميم أنيق وكلاسيكي.", type: "عبايات سوداء تقليدي" },
+            { id: 3, name: "عباية بتطريز خفيف", price: 8000, image: "صور المنتجات/عبايات تطريز خفيف/a.jpg", description: "تطريز دقيق يضفي لمسة فنية.", type: "عبايات تطريز خفيف" },
+            { id: 4, name: "عباية ملونة أنيقة", price: 12500, image: "صور المنتجات/عبايات ملونه/a.jpg", description: "ألوان زاهية تناسب جميع الأوقات.", type: "عبايات ملونة" },
+            { id: 5, name: "عباية تركية مطرزة", price: 13000, image: "صور المنتجات/عبايات تركية/a.jpg", description: "تصميمات تركية أصيلة.", type: "عبايات تركية" },
+            { id: 6, name: "عباية مطرزة يدوياً", price: 15000, image: "صور المنتجات/عبايات مطرزة/a.jpg", description: "تطريز يدوي فريد من نوعه.", type: "عبايات مطرزة" }
+          ];
+          renderProducts();
+          console.log("Fallback products loaded");
+        }
+        hideLoader(); // إخفاء شريط التحميل حتى في حالة الخطأ أو استخدام البيانات الاحتياطية
+      }
+    }
+
+    // Audio Functions
+      // Audio Functions
+    function updateSoundButton() {
+      const button = document.getElementById('soundButton');
+      if (button) {
+        // Ensure the button text reflects the *next* action
+        button.innerHTML = soundEnabled ?"🔊 تشغيل الصوت" :  "🔇 اغلاق الصوت" ;
+      }
+    }
+
+    function toggleSound() {
+      const audio = document.getElementById('backgroundAudio');
+      if (!soundEnabled) {
+        // User wants to turn sound ON
+        audio.muted = false; // Unmute the audio
+        audio.play()
+          .then(() => {
+            soundEnabled = true; // Update state
+            updateSoundButton(); // Update button text
+            localStorage.setItem('soundEnabled', 'true'); // Save preference
+          })
+          .catch(err => {
+            console.error("Audio play error:", err);
+            // Mute again if play failed
+            audio.muted = true;
+            alert("حدث خطأ في تشغيل الصوت. يرجى التفاعل مع الصفحة.");
+          });
+      } else {
+        // User wants to turn sound OFF
+        audio.pause();
+        audio.currentTime = 0; // Optional: reset playback position
+        audio.muted = true; // Mute the audio
+        soundEnabled = false; // Update state
+        updateSoundButton(); // Update button text
+        localStorage.setItem('soundEnabled', 'false'); // Save preference
+      }
+    }
+
+    // Initialize App - Ensure initial state is correct
+    document.addEventListener("DOMContentLoaded", function () {
+      // Load saved sound state or default to muted
+      const savedSoundState = localStorage.getItem('soundEnabled');
+      soundEnabled = savedSoundState === 'true';
+
+      // Make sure the audio element reflects the initial state
+      const audio = document.getElementById('backgroundAudio');
+      if (audio) {
+        audio.muted = !soundEnabled; // Muted if sound is not enabled
+        // If sound was previously enabled, attempt to play (user gesture might be needed)
+        if (soundEnabled) {
+             // Note: autoplay might still be blocked, handled by user click
+             updateSoundButton(); // Ensure button reflects the loaded state
+        } else {
+             updateSoundButton(); // Ensure button shows "فتح الصوت" for muted state
+        }
+      }
+
+      // Set up event listeners
+      const soundButton = document.getElementById('soundButton');
+      if (soundButton) {
+        soundButton.addEventListener('click', toggleSound);
+      }
+
+      // Fetch products
+      fetchProducts();
+      // Set up touch gestures for cart
+      const cartItemsContainer = document.getElementById("cartItems");
+      if (cartItemsContainer) {
+        const hammer = new Hammer(cartItemsContainer);
+        hammer.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+      }
+    });
+
+    // Checkout Functions
+    function initiateCheckout() {
+      const cart = getCart();
+      if (cart.length === 0) {
+        alert("عربتك فارغة! الرجاء إضافة منتجات.");
+        return;
+      }
+      const user = JSON.parse(localStorage.getItem("dreamtime_user"));
+      if (!user || !user.phoneNumber) {
+        document.getElementById("loginModal").style.display = "flex";
+        return;
+      }
+      window.location.href = "payment.html";
+    }
+
+    function sendVerificationCode() {
+      const phoneNumber = document.getElementById("phoneNumberInput").value.trim();
+      if (!phoneNumber) {
+        alert("يرجى إدخال رقم الهاتف.");
+        return;
+      }
+      const code = Math.floor(1000 + Math.random() * 9000);
+      localStorage.setItem("dreamtime_verification_code", code.toString());
+      localStorage.setItem("dreamtime_user", JSON.stringify({ phoneNumber }));
+      document.getElementById("verificationContainer").style.display = "block";
+    }
+
+    function verifyUser() {
+      const enteredCode = document.getElementById("verificationCodeInput").value.trim();
+      const storedCode = localStorage.getItem("dreamtime_verification_code");
+      if (enteredCode !== storedCode) {
+        alert("رمز التحقق غير صحيح.");
+        return;
+      }
+      alert("تم التحقق بنجاح!");
+      document.getElementById("loginModal").style.display = "none";
+      window.location.href = "payment.html";
+    }
+
+    // Initialize App
+    document.addEventListener("DOMContentLoaded", function () {
+      // Load saved sound state
+      const savedSoundState = localStorage.getItem('soundEnabled');
+      if (savedSoundState === 'true') {
+        soundEnabled = true;
+        updateSoundButton();
+      }
+
+      // Set up event listeners
+      document.getElementById('soundButton').addEventListener('click', toggleSound);
+
+      // Fetch products
+      fetchProducts();
+
+      // Set up touch gestures for cart
+      const cartItemsContainer = document.getElementById("cartItems");
+      if (cartItemsContainer) {
+        const hammer = new Hammer(cartItemsContainer);
+        hammer.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+      }
+    });
+  </script>
+</body>
+
+</html>

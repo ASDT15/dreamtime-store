@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تفاصيل المنتج</title>
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <style>
+   
+    :root {
+      --bg-light: #ecdaea;
+      --text-light: #000000;
+      --bg-dark: #121212;
+      --text-dark: #f0f0f0;
+      --card-bg: #f9f9f9;
+      --btn-bg: #ff87f1;
+      --btn-hover: #ffffff;
+      --link-color: #1e90ff;
+    }
+    /* ------------------------- */
+    /* 👇 إضافة خلفية الكوبيز */
+    .cartoon-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* تأكد من عدم وجود مسافات زائدة في الرابط */
+        background: url('https://www.transparenttextures.com/patterns/cubes.png'), #000000;
+        opacity: 0.3;
+        z-index: -1; /* خلف كل شيء */
+        pointer-events: none; /* لا تتفاعل مع النقرات/السحب */
+    }
+
+    body.dark-mode .cartoon-bg {
+        /* في الوضع الداكن، يمكنك تغيير لون الخلفية أو الشفافية */
+        background: url('https://www.transparenttextures.com/patterns/cubes.png'), #000000; /* نفس النمط */
+        opacity: 0.2; /* شفافية أقل قليلاً في الوضع الداكن */
+    }
+    /* 👆 نهاية إضافة خلفية الكوبيز */
+    /* ------------------------- */
+
+    body.dark-mode {
+      --bg-light: #121212;
+      --text-light: #f0f0f0;
+      --card-bg: #2d2d2d;
+      --btn-bg: #ffe6fa;
+      --btn-hover: #ffffff;
+      --link-color: #1e90ff;
+    }
+   /* ------------------------- */
+/* New Overlay Loader styles with Image */
+#loader {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 2, 2, 0.5); /* Light mode background */
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+body.dark-mode #loader {
+    background: rgba(0, 0, 0, 0.8); /* Dark mode background */
+}
+
+.loader-content {
+    text-align: center;
+}
+
+/* تنسيق صورة التحميل */
+.loader-image {
+    width: 100px; /* عرض الصورة */
+    height: 100px; /* ارتفاع الصورة */
+    margin-bottom: 20px;
+    /* إذا أردت تدوير الصورة أثناء التحميل، فقم بإزالة التعليق عن السطر التالي */
+    /* animation: spin-image 2s linear infinite; */
+}
+
+/* مفتاح تحريك دوران الصورة (اختياري) */
+@keyframes spin-image {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* تنسيق نص "جاري التحميل" */
+.loader-text {
+    font-size: 18px;
+    color: #333; /* Light mode text */
+    font-weight: 500;
+}
+
+body.dark-mode .loader-text {
+    color: #fff; /* Dark mode text */
+}
+/* ------------------------- */
+.loader-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    /* إزالة التعليق لتفعيل الدوران */
+    animation: spin-image 2s linear infinite;
+}
+    
+    body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000, #ffe8fe86);
+            color: #000000;
+            margin: 0;
+            padding: 20px;
+        }
+    .product-container {
+      max-width: 600px;
+      margin: auto;
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: background 0.3s ease;
+    }
+    .add-to-cart-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: var(--btn-bg);
+      color: black;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .add-to-cart-btn:hover {
+      background-color: var(--btn-hover);
+    }
+    .back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 9999;
+      text-decoration: none;
+      color: var(--link-color);
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+    }
+    .back-link:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    /* تنسيق شريط التحميل */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: #f0f0f0;
+      z-index: 10000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+    .loader-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--btn-bg), #ff4081);
+      transition: width 0.3s ease;
+    }
+    /* تنسيق عارض الصور */
+    .image-gallery {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background-color: #333;
+      touch-action: pan-y; /* السماح بالسحب الأفقي فقط */
+    }
+    .image-gallery .item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .image-gallery .item.active {
+      opacity: 1;
+    }
+    .image-gallery .item img,
+    .image-gallery .item video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      border: 3px solid var(--btn-bg);
+      /* منع التحديد عند السحب */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
+      pointer-events: none; /* منع التحكم في الفيديو عند السحب */
+    }
+    .dots-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .dot {
+      height: 8px;
+      width: 8px;
+      background-color: #bbb;
+      border-radius: 50%;
+      margin: 0 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .dot.active {
+      background-color: var(--btn-bg);
+    }
+    .error-message {
+      color: red;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    /* تنسيق زرار المقاسات */
+    .size-controls {
+      display: flex;
+      gap: 5px;
+      margin: 15px 0;
+      justify-content: center;
+    }
+    .size-btn {
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .size-btn:hover {
+      background-color: #e0e0e0;
+    }
+    .size-btn.active {
+      background-color: var(--btn-bg);
+      color: white;
+      border-color: var(--btn-bg);
+    }
+  </style>
+  <!-- 👇 Script لتطبيق الوضع الداكن/الفاتح عند تحميل الصفحة -->
+  <script>
+    // عند تحميل الصفحة، تحقق من إعداد السمة وطبقها
+    document.addEventListener("DOMContentLoaded", function () {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        } else {
+            // Ensure light mode is active if 'dark' is not explicitly saved
+            document.body.classList.remove('dark-mode');
+        }
+    });
+  </script>
+</head>
+<body>
+  <!-- 👇 إضافة خلفية الكوبيز -->
+  <div class="cartoon-bg"></div>
+  <!-- 👇 New Overlay Loader HTML -->
+<div id="loader">
+  <div class="loader-content">
+    <!-- استبدال السبينر بصورة -->
+    <img src="LOGO.png" alt="تحميل" class="loader-image">
+    <div class="loader-text">جاري التحميل...</div>
+  </div>
+</div>
+<!-- 👆 New Overlay Loader HTML -->
+
+  <!-- 👇 زر العودة للمتجر في بداية الصفحة -->
+  <a href="index.html" class="back-link" style="position: fixed; top: 20px; left: 20px; z-index: 9999;">العودة إلى المتجر</a>
+ 
+  <!-- 📦 حاوية المنتج -->
+  <div class="product-container" id="productDetails">
+    <h2 id="productName">جارٍ تحميل المنتج...</h2>
+    <div class="image-gallery" id="imageGallery">...</div>
+    <div class="dots-container" id="dotsContainer"></div>
+    <div id="errorMsg" class="error-message" style="display:none;"></div>
+    <p id="productDesc"></p>
+    <p id="productPrice"></p>
+    <!-- 👇 أزرار اختيار المقاس -->
+    <div class="size-controls">
+      <button class="size-btn" onclick="selectSize('S')">S</button>
+      <button class="size-btn" onclick="selectSize('M')">M</button>
+      <button class="size-btn" onclick="selectSize('L')">L</button>
+      <button class="size-btn" onclick="selectSize('XL')">XL</button>
+    </div>
+    <!-- 👇 زر الإضافة إلى السلة -->
+    <button class="add-to-cart-btn" onclick="addToCart()">إضافة إلى السلة</button>
+  </div>
+  <!-- 👇 ملف الصوت الخلفي -->
+  <audio id="addSound" src="athfo.mp3"></audio>
+  <!-- Plyr JS (Polyfilled version for wider browser support) -->
+  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+  <script>
+    // تعريف عنوان API
+    const API_BASE_URL = 'http://localhost:3000';
+    // المتغير لتخزين المنتج الحالي
+    let currentProduct = null;
+    let currentIndex = 0;
+    let selectedSize = 'M'; // الحجم الافتراضي
+    let autoSlideInterval;
+    let plyrInstances = []; // Array to hold Plyr instances for cleanup
+    
+    // متغيرات للسحب
+    let startX = 0;
+    let startY = 0;
+    let endX = 0;
+    let endY = 0;
+    let isSwiping = false;
+    
+  
+    // ✅ الحصول على ID المنتج من الرابط
+    function getProductIdFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return parseInt(urlParams.get('id'));
+    }
+    // ✅ جلب تفاصيل المنتج من API
+    async function fetchProductFromAPI(productId) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/products/${productId}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('المنتج غير موجود.');
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        }
+        const product = await response.json();
+        return product;
+      } catch (error) {
+        console.error('Error fetching product from API:', error);
+        throw error;
+      }
+    }
+    // ✅ دالة مساعدة لتحديد نوع الملف (محسّنة)
+    function getFileType(src) {
+      if (typeof src !== 'string') return 'unknown';
+      // تحقق من بيانات Base64
+      if (src.startsWith('')) {
+        // استخراج نوع MIME (مثلاً: data:image/jpeg;base64,...)
+        const mimeType = src.split(';')[0].split(':')[1]?.toLowerCase();
+        if (mimeType && mimeType.startsWith('image/')) return 'image';
+        if (mimeType && mimeType.startsWith('video/')) return 'video';
+        return 'unknown'; // نوع بيانات Base64 غير مدعوم
+      }
+      // تحقق من عناوين URL العادية
+      const lowerSrc = src.toLowerCase();
+      const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+      const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.webm'];
+      if (imageExtensions.some(ext => lowerSrc.includes(ext))) return 'image';
+      if (videoExtensions.some(ext => lowerSrc.includes(ext))) return 'video';
+      // افتراضيًا، اعتبرها صورة إذا لم تكن واضحة
+      console.warn(`Could not determine type for URL: ${src}, defaulting to image.`);
+      return 'image';
+    }
+    
+    // ✅ عرض الصور والفيديوهات (محسّن) - Plyr فقط في المعرض
+    function renderMedia(product) {
+      console.log("Starting renderMedia with product:", product);
+      const imageGallery = document.getElementById("imageGallery");
+      const dotsContainer = document.getElementById("dotsContainer");
+      if (!imageGallery || !dotsContainer) return;
+      // Cleanup previous Plyr instances
+      plyrInstances.forEach(player => {
+        if (player && typeof player.destroy === 'function') {
+            player.destroy();
+        }
+      });
+      plyrInstances = [];
+      imageGallery.innerHTML = '';
+      dotsContainer.innerHTML = '';
+      // إنشاء مصفوفة موحدة للوسائط - تم تعديل الترتيب
+      let mediaArray = [];
+      // 1. أضف الفيديوهات أولاً
+      if (product.videos && Array.isArray(product.videos)) {
+        mediaArray = [...mediaArray, ...product.videos];
+      }
+      // 2. ثم أضف الصورة الرئيسية
+      if (product.main_image_url) {
+        mediaArray.push(product.main_image_url);
+      }
+      // 3. ثم أضف الصور الإضافية
+      if (product.images && Array.isArray(product.images)) {
+        mediaArray = [...mediaArray, ...product.images];
+      }
+      // **Fix: Ensure main_image_url is not duplicated if it's also in the images array**
+      // Create a unique list based on value and order of appearance
+       const uniqueMediaArray = [];
+       const seen = new Set();
+       mediaArray.forEach(src => {
+         if (src && !seen.has(src)) { // Check if src is not null/empty and not already seen
+           seen.add(src);
+           uniqueMediaArray.push(src);
+         }
+       });
+       mediaArray = uniqueMediaArray; // Use the deduplicated array
+      if (mediaArray.length === 0) {
+        console.log("No media found, showing placeholder");
+        // عرض صورة بديلة محلية بدلاً من الخارجية
+        imageGallery.innerHTML = '<img src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\' viewBox=\'0 0 200 200\'%3E%3Crect width=\'200\' height=\'200\' fill=\'%23cccccc\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'20\' fill=\'%23666666\'%3Eلا توجد صورة%3C/text%3E%3C/svg%3E" alt="لا توجد صورة" style="width:100%; height:100%; object-fit: contain;">';
+        return;
+      }
+      // **Fix: Reset currentIndex before processing new media**
+      currentIndex = 0;
+      mediaArray.forEach((src, index) => {
+        console.log(`Processing media item ${index}:`, src);
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("item");
+        if (index === 0) itemDiv.classList.add("active"); // العنصر الأول نشط افتراضيًا
+        const fileType = getFileType(src); // Use the improved function
+        console.log(`Detected file type for item ${index}:`, fileType);
+        if (fileType === 'video') {
+          console.log(`Creating video element for item ${index}`);
+          const video = document.createElement("video");
+          video.src = src;
+          // إضافة خصائص التشغيل التلقائي الصامت
+          video.autoplay = true;   // التشغيل التلقائي
+          video.muted = true;      // تشغيل الصوت صامتًا (ضروري للتشغيل التلقائي في معظم المتصفحات)
+          video.loop = true;       // تكرار الفيديو
+          video.playsInline = true; // مهم للموبايل
+          // Remove standard controls as Plyr will provide them
+          // video.controls = true;
+          video.style.maxWidth = "100%";
+          video.style.maxHeight = "100%";
+          video.style.objectFit = "contain";
+          video.style.opacity = "1";
+          video.style.backgroundColor = "#000";
+          // Add class for Plyr identification
+          video.classList.add('plyr-video');
+          video.addEventListener('loadeddata', function () {
+            console.log(`✅ تم تحميل بيانات الفيديو ${index} بنجاح`);
+          }, false);
+          video.addEventListener('error', function (e) {
+            console.error(`⚠️ خطأ في تحميل الفيديو ${index}:`, e);
+             this.onerror = null; // prevents infinite loop
+             this.insertAdjacentHTML('beforebegin', `<p style="color:red;">خطأ في تحميل الفيديو</p>`);
+             this.remove();
+          }, false);
+          itemDiv.appendChild(video);
+          // --- Initialize Plyr for the video in the gallery ---
+          // Use a slight delay to ensure it's appended to the DOM
+          setTimeout(() => {
+              try {
+                  const player = new Plyr(video, {
+                      // Add Plyr options here (e.g., i18n for Arabic, controls layout)
+                       muted: true, // إضافة هذا السطر
+                       i18n: {
+                            restart: "إعادة التشغيل",
+                            rewind: "الترجيع {seektime} ثانية",
+                            play: "تشغيل",
+                            pause: "إيقاف مؤقت",
+                            fastForward: "التقديم السريع {seektime} ثانية",
+                            seek: "بحث",
+                            seekLabel: "{currentTime} من {duration}",
+                            played: "تم التشغيل",
+                            buffered: "تم التخزين المؤقت",
+                            currentTime: "الوقت الحالي",
+                            duration: "المدة الإجمالية",
+                            volume: "مستوى الصوت",
+                            mute: "كتم الصوت",
+                            unmute: "إلغاء كتم الصوت",
+                            enableCaptions: "تمكين التسميات التوضيحية",
+                            disableCaptions: "تعطيل التسميات التوضيحية",
+                            download: "تحميل",
+                            enterFullscreen: "دخول ملء الشاشة",
+                            exitFullscreen: "خروج من ملء الشاشة",
+                            frameTitle: "مشغل لـ {title}",
+                            captions: "الترجمات",
+                            settings: "الإعدادات",
+                            menuBack: "العودة إلى القائمة السابقة",
+                            speed: "السرعة",
+                            normal: "عادي",
+                            quality: "الجودة",
+                            loop: "تكرار",
+                            start: "ابدأ",
+                            end: "نهاية",
+                            all: "الكل",
+                            reset: "إعادة تعيين",
+                            disabled: "معطل",
+                            enabled: "ممكّن",
+                            advertisement: "إعلان",
+                            qualityBadge: {
+                                2160: "4K",
+                                1440: "HD",
+                                1080: "HD",
+                                720: "HD",
+                                576: "SD",
+                                480: "SD",
+                            }
+                        }
+                  });
+                  plyrInstances.push(player); // Store instance for potential cleanup
+                  console.log("Plyr initialized for gallery video:", src);
+              } catch (err) {
+                   console.error("Failed to initialize Plyr for gallery video:", src, err);
+                   // Fallback to default controls if Plyr fails
+                   video.controls = true;
+              }
+          }, 0);
+        } else if (fileType === 'image') {
+          console.log(`Creating image element for item ${index}`);
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = `صورة المنتج ${index + 1}`;
+          img.onload = function () {
+            console.log(`✅ تم تحميل الصورة ${index} بنجاح`);
+            this.style.opacity = "1";
+          };
+          img.onerror = function () {
+            console.error(`⚠️ لم يتم تحميل الصورة: ${src}`);
+            this.onerror = null; // Prevents infinite loop
+            // استخدام صورة SVG بديلة مضمنة عند فشل تحميل الصورة
+            this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23cccccc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='20' fill='%23666666'%3Eصورة غير متوفرة%3C/text%3E%3C/svg%3E";
+            this.alt = "صورة غير متوفرة";
+            this.style.opacity = "1";
+          };
+          img.style.maxWidth = "100%";
+          img.style.maxHeight = "100%";
+          img.style.objectFit = "contain";
+          img.style.opacity = "0";
+          img.style.transition = "opacity 0.5s ease-in-out";
+          itemDiv.appendChild(img);
+        } else {
+          console.warn(`نوع ملف غير معروف أو غير مدعوم: ${src}`);
+          // استخدام صورة SVG بديلة مضمنة لملف غير مدعوم
+          const placeholderImg = document.createElement("img");
+          placeholderImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23cccccc'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='20' fill='%23666666'%3Eملف غير مدعوم%3C/text%3E%3C/svg%3E";
+          placeholderImg.alt = "ملف غير مدعوم";
+          placeholderImg.style.maxWidth = "100%";
+          placeholderImg.style.maxHeight = "100%";
+          placeholderImg.style.objectFit = "contain";
+          placeholderImg.style.opacity = "1";
+          itemDiv.appendChild(placeholderImg);
+        }
+        imageGallery.appendChild(itemDiv);
+        // إنشاء الدوائر (النقاط)
+        const dot = document.createElement("span");
+        dot.classList.add("dot");
+        if (index === 0) dot.classList.add("active");
+        dot.addEventListener("click", () => {
+          currentIndex = index;
+          showCurrentItem();
+          resetAutoSlide();
+        });
+        dotsContainer.appendChild(dot);
+      });
+      
+      // إضافة مستمعي الأحداث للسحب
+      addSwipeListeners(imageGallery);
+      
+      // تأكد من إعادة تعيين currentIndex إذا تغيرت محتويات المعرض
+      currentIndex = 0;
+      showCurrentItem(); // عرض العنصر الأول (الفيديو أو الصورة الأولى)
+    }
+    
+    // إضافة مستمعي الأحداث للسحب
+    function addSwipeListeners(element) {
+      element.addEventListener('touchstart', handleTouchStart, false);
+      element.addEventListener('touchmove', handleTouchMove, false);
+      element.addEventListener('touchend', handleTouchEnd, false);
+      
+      // للأجهزة التي تدعم الماوس
+      element.addEventListener('mousedown', handleMouseDown, false);
+      element.addEventListener('mousemove', handleMouseMove, false);
+      element.addEventListener('mouseup', handleMouseUp, false);
+      element.addEventListener('mouseleave', handleMouseUp, false);
+    }
+    
+    // معالجة بداية اللمس
+    function handleTouchStart(e) {
+      const touch = e.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+      isSwiping = true;
+    }
+    
+    // معالجة حركة اللمس
+    function handleTouchMove(e) {
+      if (!isSwiping) return;
+      const touch = e.touches[0];
+      endX = touch.clientX;
+      endY = touch.clientY;
+    }
+    
+    // معالجة نهاية اللمس
+    function handleTouchEnd(e) {
+      if (!isSwiping) return;
+      isSwiping = false;
+      
+      const diffX = startX - endX;
+      const diffY = startY - endY;
+      
+      // التحقق مما إذا كان السحب أفقيًا بدرجة كافية
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          // سحب إلى اليسار - الانتقال للصورة التالية
+          nextItem();
+        } else {
+          // سحب إلى اليمين - الانتقال للصورة السابقة
+          prevItem();
+        }
+      }
+    }
+        // ✅ عرض شريط التحميل *العلوي* (الوظيفة الأصلية)
+    function showTopLoader() {
+      const loaderBar = document.getElementById("loaderBar");
+      if (!loaderBar) return;
+      loaderBar.parentElement.style.display = "block";
+      loaderBar.style.width = "0%";
+      requestAnimationFrame(() => {
+        loaderBar.style.width = "100%";
+      });
+    }
+
+    // ✅ إخفاء شريط التحميل *العلوي* (الوظيفة الأصلية)
+    function hideTopLoader(delay = 500) {
+      setTimeout(() => {
+        const loaderBar = document.getElementById("loaderBar");
+        if (!loaderBar) return;
+        loaderBar.style.width = "0%";
+        setTimeout(() => {
+          loaderBar.parentElement.style.opacity = "0";
+        }, 300);
+        setTimeout(() => {
+          loaderBar.parentElement.style.display = "none";
+          loaderBar.parentElement.style.opacity = "1";
+        }, 800);
+      }, delay);
+    }
+
+    // ✅ عرض *اللودر الكامل* الجديد
+    function showLoader() {
+        const loaderOverlay = document.getElementById("loader");
+        if (loaderOverlay) {
+            loaderOverlay.style.display = 'flex'; // Use flex to center content
+        }
+        // يمكنك اختيارياً إظهار شريط التحميل العلوي أيضاً
+        // showTopLoader();
+    }
+
+    // ✅ إخفاء *اللودر الكامل* الجديد
+    function hideLoader(delay = 500) {
+        setTimeout(() => {
+            const loaderOverlay = document.getElementById("loader");
+            if (loaderOverlay) {
+                loaderOverlay.style.display = 'none';
+            }
+            // يمكنك اختيارياً إخفاء شريط التحميل العلوي أيضاً
+            // hideTopLoader(0); // بدون تأخير إضافي
+        }, delay);
+    }
+    
+    // معالجة بداية الضغط بالماوس
+    function handleMouseDown(e) {
+      startX = e.clientX;
+      startY = e.clientY;
+      isSwiping = true;
+      e.preventDefault(); // منع التحديد
+    }
+    
+    // معالجة حركة الماوس
+    function handleMouseMove(e) {
+      if (!isSwiping) return;
+      endX = e.clientX;
+      endY = e.clientY;
+    }
+    
+    // معالجة نهاية الضغط بالماوس
+    function handleMouseUp(e) {
+      if (!isSwiping) return;
+      isSwiping = false;
+      
+      const diffX = startX - endX;
+      const diffY = startY - endY;
+      
+      // التحقق مما إذا كان السحب أفقيًا بدرجة كافية
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          // سحب إلى اليسار - الانتقال للصورة التالية
+          nextItem();
+        } else {
+          // سحب إلى اليمين - الانتقال للصورة السابقة
+          prevItem();
+        }
+      }
+    }
+    
+    // ✅ عرض تفاصيل المنتج
+    async function displayProductDetails() {
+      showLoader();
+      const errorMsg = document.getElementById("errorMsg");
+      errorMsg.style.display = "none";
+      try {
+        const productId = getProductIdFromURL();
+        if (!productId) {
+          throw new Error("معرف المنتج غير متوفر في الرابط.");
+        }
+        currentProduct = await fetchProductFromAPI(productId);
+        // عرض التفاصيل
+        document.getElementById("productName").textContent = currentProduct.name;
+        document.getElementById("productDesc").textContent = currentProduct.description || "لا يوجد وصف للمنتج.";
+        document.getElementById("productPrice").textContent = `السعر: ${currentProduct.price} ريال`;
+        // عرض الصور والفيديوهات
+        renderMedia(currentProduct);
+        // بدء السلايد شو
+        startAutoSlide();
+        // تفعيل التفاعل مع الدوائر
+        initDotsClickHandler();
+      } catch (error) {
+        console.error("فشل تحميل تفاصيل المنتج:", error);
+        let errorMessage = "حدث خطأ أثناء تحميل المنتج.";
+        if (error.message === 'المنتج غير موجود.') {
+          errorMessage = `عذرًا، لم يتم العثور على المنتج المطلوب (ID: ${productId}).`;
+        } else if (error.message.includes('HTTP error! status:')) {
+          errorMessage = `حدث خطأ في الاتصال بالخادم: ${error.message}`;
+        }
+        errorMsg.textContent = errorMessage;
+        errorMsg.style.display = "block";
+        document.getElementById("productName").textContent = "خطأ في التحميل";
+      } finally {
+        hideLoader();
+      }
+    }
+
+    // ✅ عرض العنصر الحالي في السلايد شو
+    function showCurrentItem() {
+      const items = document.querySelectorAll(".image-gallery .item");
+      const dots = document.querySelectorAll(".dot");
+      items.forEach((item, index) => {
+        item.classList.toggle("active", index === currentIndex);
+      });
+      dots.forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentIndex);
+      });
+    }
+    // ✅ الانتقال للعنصر التالي
+    function nextItem() {
+      const items = document.querySelectorAll(".image-gallery .item");
+      currentIndex = (currentIndex + 1) % items.length;
+      showCurrentItem();
+      resetAutoSlide();
+    }
+    // ✅ الانتقال للعنصر السابق
+    function prevItem() {
+      const items = document.querySelectorAll(".image-gallery .item");
+      currentIndex = (currentIndex - 1 + items.length) % items.length;
+      showCurrentItem();
+      resetAutoSlide();
+    }
+    // ✅ بدء السلايد شو التلقائي
+    function startAutoSlide() {
+      clearInterval(autoSlideInterval); // مسح أي فاصل زمني سابق
+      autoSlideInterval = setInterval(nextItem, 3000); // تغيير الصورة كل 3 ثواني
+    }
+    // ✅ إعادة ضبط السلايد شو
+    function resetAutoSlide() {
+      clearInterval(autoSlideInterval);
+      startAutoSlide();
+    }
+    // ✅ تفعيل التفاعل مع النقر على الدوائر
+    function initDotsClickHandler() {
+      const dots = document.querySelectorAll(".dot");
+      dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+          currentIndex = index;
+          showCurrentItem();
+          resetAutoSlide(); // إعادة ضبط السلايد شو عند التفاعل اليدوي
+        });
+      });
+    }
+    // ✅ اختيار المقاس
+    function selectSize(size) {
+      selectedSize = size;
+      const sizeButtons = document.querySelectorAll(".size-btn");
+      sizeButtons.forEach(btn => {
+        if (btn.textContent === size) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
+    // ✅ إضافة المنتج إلى السلة
+    function addToCart() {
+      if (!currentProduct) {
+        alert("بيانات المنتج غير متوفرة!");
+        return;
+      }
+      // نسخ الكائن لتجنب مشاكل التعديل المباشر
+      const productToAdd = {
+        id: currentProduct.id,
+        name: currentProduct.name,
+        price: currentProduct.price,
+        description: currentProduct.description,
+        // استخدم الصورة الرئيسية أو أول صورة متاحة
+        image: currentProduct.main_image_url || (currentProduct.images && currentProduct.images[0]) || (currentProduct.media && currentProduct.media[0]) || "placeholder.jpg",
+        type: currentProduct.type || "غير مصنف"
+        // أضف أي خصائص أخرى مطلوبة للسلة
+      };
+      let cart = JSON.parse(localStorage.getItem("dreamtime_cart")) || [];
+      const existingItem = cart.find(item => item.id === productToAdd.id);
+      if (existingItem) {
+        existingItem.quantity += 1;
+        existingItem.size = selectedSize; // تحديث الحجم
+      } else {
+        cart.push({ ...productToAdd, quantity: 1, size: selectedSize });
+      }
+      localStorage.setItem("dreamtime_cart", JSON.stringify(cart));
+      const addSound = document.getElementById('addSound');
+      if (addSound) {
+        addSound.currentTime = 0;
+        addSound.play().catch(err => console.error("فشل تشغيل الصوت:", err));
+      }
+      alert(productToAdd.name + " تم إضافته إلى السلة!");
+    }
+    // ✅ تحميل تفاصيل المنتج عند تحميل الصفحة
+    window.onload = displayProductDetails;
+  </script>
+</body>
+>>>>>>> 1ca9840fd7669e69ef9fcfdb733ea761df62ea9d
+</html>

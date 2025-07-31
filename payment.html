@@ -1,0 +1,530 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>الدفع - DREAM TIME</title>
+    <style>
+        :root {
+            --bg-light: #ffffff;
+            --bg-dark: #0e0e0e;
+            --text-light: #ffffff;
+            --text-dark: #fbfbfb;
+            --btn-bg: #ff87f1;
+            --btn-hover: #ffffff;
+            --input-border: #050505;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #525051, #ffb8dc);
+            color: #000000;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .dark-mode body {
+            background: #000000;
+            color: #ff87f1;
+        }
+
+        .cartoon-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png'), #000000;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .dark-mode .cartoon-bg {
+            background: url('https://www.transparenttextures.com/patterns/cubes.png'), #000000;
+            opacity: 0.200;
+        }
+
+        .payment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgb(0, 0, 0);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgb(255, 255, 255);
+            position: relative;
+        }
+
+        .dark-mode .payment-container {
+            background: #ffffff;
+            box-shadow: 0 10px 30px #080808;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #000000;
+            color: rgb(255, 251, 251);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #ff7df2;
+            transform: scale(1.05);
+        }
+
+        .section-title {
+            text-align: center;
+            color: #000000;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .order-summary {
+            background: #000000;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.918);
+        }
+
+        .dark-mode .order-summary {
+            background: #fddcf9;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #f3f1f1;
+        }
+
+        .location-form {
+            margin-top: 20px;
+            border: 2px solid #030303;
+            border-radius: 15px;
+            padding: 20px;
+            background: #020202;
+            box-shadow: 0 4px 10px #000000;
+        }
+
+        .dark-mode .location-form {
+            background: #fddcf9;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .payment-method {
+            background: rgb(236, 227, 227);
+            border: 2px solid #000000;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dark-mode .payment-method {
+            background: #f7f4f4;
+        }
+
+        .payment-method:hover {
+            transform: scale(1.05);
+            border-color: #fa5cb8;
+        }
+
+        .payment-method.selected {
+            border-color: #fa67c2;
+            background: #f0a0c0;
+        }
+
+        .dark-mode .payment-method.selected {
+            background: #970083;
+        }
+
+        .checkout-btn {
+            background: #030303;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(243, 101, 207, 0.4);
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .checkout-btn:hover {
+            background: #f37cdf;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .character {
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 200px;
+            pointer-events: none;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(20deg);
+            }
+        }
+
+        .account-details {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .account-details.show {
+            display: block;
+        }
+
+        .account-btn {
+            background: #030303;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .account-btn:hover {
+            background: #030303;
+            transform: translateY(-2px);
+        }
+
+        /* Loader styles */
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dark-mode #loader {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--btn-bg);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #0c0c0c;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        .dark-mode input[type="text"] {
+            background: #ffffff;
+            color: rgb(0, 0, 0);
+            border-color: #0c0c0c;
+        }
+
+        button {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cartoon-bg"></div>
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+    <div class="payment-container">
+        <button class="back-button" onclick="goBackToHome()">🡸 العودة للرئيسية</button>
+        <img src="LOGO.png" alt="Logo" class="character" style="width: 150px;">
+        <h2 class="section-title">إكمال الطلب</h2>
+        <div class="order-summary" id="orderSummary">
+            <!-- Will be filled dynamically -->
+        </div>
+        <div class="total-amount" id="totalAmount">
+            <!-- Will be filled dynamically -->
+        </div>
+        <div class="location-form">
+            <h4>أدخل موقع العميل يدويًا:</h4>
+            <input type="text" id="manualAddress" placeholder="أدخل العنوان هنا">
+            <button onclick="submitManualAddress()" style="margin-top: 15px; background: var(--btn-bg); color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer;">إرسال الموقع اليدوي</button>
+        </div>
+        <div class="payment-methods" id="paymentMethods" style="display: none;">
+            <div class="payment-method" onclick="selectMethod('cash')">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='48' height='48'><path fill='%23ff72d0' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-6c.83 0 1.5-.67 1.5-1.5S7.83 9 7 9s-1.5.67-1.5 1.5S6.17 12 7 12zm5 0c.83 0 1.5-.67 1.5-1.5S12.83 9 12 9s-1.5.67-1.5 1.5S11.17 12 12 12zm5 0c.83 0 1.5-.67 1.5-1.5S17.83 9 17 9s-1.5.67-1.5 1.5S16.17 12 17 12z'/></svg>"
+                    alt="Cash">
+                <span>💵دفع كاش عند الإستلام</span>
+            </div>
+            <div class="payment-method" onclick="selectMethod('bank')">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='48' height='48'><path fill='%23ff72d0' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-8h4v-2h-4v2zm0 4h4v-2h-4v2zm0-8h4V6h-4v2z'/></svg>"
+                    alt="Online">
+                <span>🏛حوالة بنكية</span>
+            </div>
+            <button class="checkout-btn" onclick="sendToWhatsApp()" id="whatsapp-btn"
+                style="background: #25d366; color: white;">📱 إرسال الطلب عبر الواتساب</button>
+        </div>
+        <div id="bank-details" class="account-details">
+            <div class="bg-white rounded-xl p-6 border border-pink-200 shadow-md mb-8" style="background: #fff5f9; border: 2px solid #ff72d0; border-radius: 15px; padding: 20px;">
+                <h3 class="text-lg font-semibold text-pink-700 mb-4">تفاصيل الحساب البنكي:</h3>
+                <ul class="space-y-2 text-gray-700">
+                    <li>اسم البنك: بنك اليمن العربي</li>
+                    <li>رقم الحساب: 1234567890</li>
+                    <li>الاسم بالكامل: متجر DREAM TIME</li>
+                    <li>رقم الهوية: 1234567890123</li>
+                    <li>الفرع: صنعاء - السبعين</li>
+                </ul>
+                <button class="account-btn" onclick="finalizeOrder()">إتمام عمليه الدفع عبر حواله بنكيه</button>
+            </div>
+        </div>
+        <button class="checkout-btn" onclick="confirmOrder()" id="confirm-btn" style="display: none;">تأكيد الطلب</button>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000'; // عنوان الخادم
+
+        // Back to home button
+        function goBackToHome() {
+            window.location.href = "index.html";
+        }
+
+        // Load cart from localStorage
+        const STORAGE_KEY = "dreamtime_cart";
+        const cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+        if (cart.length === 0) {
+            alert("عربتك فارغة! الرجاء العودة إلى الصفحة الرئيسية وإضافة منتجات.");
+            window.location.href = "index.html";
+        }
+
+        // Display cart items in payment page
+        const orderSummary = document.getElementById("orderSummary");
+        const totalAmount = document.getElementById("totalAmount");
+        let total = 0;
+
+        cart.forEach(item => {
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "order-item";
+            itemDiv.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <img src="${item.image}" alt="صورة المنتج" style="width: 60px; height: auto; border-radius: 8px; margin-right: 15px;">
+                    <div>
+                        <div><strong>${item.name}</strong> (مقاس: ${item.size}) x ${item.quantity}</div>
+                        <div>${(item.price * item.quantity).toFixed(2)} ريال</div>
+                    </div>
+                </div>
+            `;
+            orderSummary.appendChild(itemDiv);
+            total += item.price * item.quantity;
+        });
+
+        totalAmount.innerHTML = `<strong>المجموع الكلي: ${total.toFixed(2)} ريال</strong>`;
+
+        // Location handling
+        function submitManualAddress() {
+            const address = document.getElementById("manualAddress").value.trim();
+            if (address) {
+                document.getElementById("paymentMethods").style.display = "grid";
+                alert("تم إرسال الموقع بنجاح!");
+            } else {
+                alert("يرجى إدخال عنوان صحيح.");
+            }
+        }
+
+        // Payment method selection
+        function selectMethod(method) {
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            document.getElementById("confirm-btn").style.display = "block";
+
+            if (method === 'bank') {
+                document.getElementById("bank-details").classList.add("show");
+            } else {
+                document.getElementById("bank-details").classList.remove("show");
+            }
+        }
+
+        // Show loader
+        function showLoader() {
+            document.getElementById("loader").style.display = "flex";
+        }
+
+        // Hide loader
+        function hideLoader() {
+            document.getElementById("loader").style.display = "none";
+        }
+
+        // Confirm order and send to server
+        async function confirmOrder() {
+            const address = document.getElementById("manualAddress").value.trim();
+            const selectedMethod = document.querySelector('.payment-method.selected');
+            
+            if (!address) {
+                alert("يرجى إدخال عنوان التسليم.");
+                return;
+            }
+
+            if (!selectedMethod) {
+                alert("يرجى اختيار طريقة الدفع.");
+                return;
+            }
+
+            const paymentMethod = selectedMethod.querySelector('span').textContent.includes('كاش') ? 'cash' : 'bank';
+
+            showLoader();
+
+            try {
+                // جمع بيانات الطلب
+                const orderData = {
+                    customer_name: "عميل متجر DREAM TIME", // يمكن استبداله باسم العميل الفعلي
+                    items: cart.map(item => ({
+                        product_id: item.id,
+                        quantity: item.quantity,
+                        size: item.size,
+                        location: address
+                    })),
+                    payment_method: paymentMethod,
+                    total_amount: total
+                };
+
+                // إرسال الطلب إلى الخادم
+                const response = await fetch(`${API_BASE_URL}/api/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('تم إنشاء الطلب:', result);
+                    alert("تم إرسال طلبك بنجاح!");
+                    // مسح السلة المحلية
+                    localStorage.removeItem(STORAGE_KEY);
+                    // إعادة التوجيه إلى صفحة حالة الطلب
+                    window.location.href = "order-status.html";
+                } else {
+                    const errorData = await response.json();
+                    console.error('خطأ في إنشاء الطلب:', errorData);
+                    alert('حدث خطأ أثناء إنشاء الطلب: ' + (errorData.error || ''));
+                }
+            } catch (error) {
+                console.error('خطأ في الطلب:', error);
+                alert('فشل الاتصال بالخادم.');
+            } finally {
+                hideLoader();
+            }
+        }
+
+        // Send to WhatsApp
+      function sendToWhatsApp() {
+    const address = document.getElementById("manualAddress").value.trim();
+    const selectedMethod = document.querySelector('.payment-method.selected');
+    const paymentMethodText = selectedMethod 
+        ? (selectedMethod.querySelector('span').textContent.includes('كاش') ? 'كاش عند الاستلام' : 'حوالة بنكية') 
+        : 'غير محددة';
+
+    if (!address) {
+        alert("⚠️ يرجى إدخال عنوان التسليم أولاً.");
+        return;
+    }
+
+    // رقم الواتساب (غيّره إلى رقم متجرك الحقيقي)
+    const whatsappNumber = "966542819759"; // ⚠️ غير هذا الرقم إلى رقمك
+
+    // توليد رسالة منسقة
+    let message = "📞 *طلب جديد من متجر DREAM TIME*"
+    ;
+    cart.forEach(item => {
+        message += `🔹 *المنتج:* ${item.name}
+   - *الحجم:* ${item.size}
+   - *الكمية:* ${item.quantity}
+   - *السعر:* ${(item.price * item.quantity).toFixed(2)} ريال
+`;
+    });
+    message += `
+💰 *المجموع الكلي:* ${total.toFixed(2)} ريال
+📍 *عنوان التسليم:* ${address}
+💳 *طريقة الدفع:* ${paymentMethodText}
+`;
+    message += `
+📝 *ملاحظات:*
+- يرجى تأكيد الطلب عبر الواتساب.
+- في حال الدفع بحوالة بنكية، يُرجى إرسال صورة الحوالة بعد التحويل.
+`;
+
+    // تشفير الرسالة وفتح واتساب
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+    // فتح واتساب في نافذة جديدة
+    window.open(whatsappUrl, '_blank');
+
+    // إظهار رسالة توجيه
+    alert("✅ تم تجهيز طلبك! ستفتح نافذة واتساب تلقائيًا.\n\nيرجى إرسال الطلب وتأكيد العناصر مع البائع.");
+}
+        // Finalize bank transfer
+        function finalizeOrder() {
+            alert("شكراً لك! سيتم تأكيد طلبك بعد استلام الحوالة البنكية.");
+            // هنا يمكنك إضافة منطق إضافي لإتمام الطلب عبر الحوالة البنكية
+        }
+
+        // تحميل حالة الوضع الليلي من localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        });
+    </script>
+</body>
+
