@@ -34,22 +34,11 @@
         pointer-events: none; /* لا تتفاعل مع النقرات/السحب */
     }
 
-    body.dark-mode .cartoon-bg {
-        /* في الوضع الداكن، يمكنك تغيير لون الخلفية أو الشفافية */
-        background: url('https://www.transparenttextures.com/patterns/cubes.png'), #000000; /* نفس النمط */
-        opacity: 0.2; /* شفافية أقل قليلاً في الوضع الداكن */
-    }
+   
     /* 👆 نهاية إضافة خلفية الكوبيز */
     /* ------------------------- */
 
-    body.dark-mode {
-      --bg-light: #121212;
-      --text-light: #f0f0f0;
-      --card-bg: #2d2d2d;
-      --btn-bg: #ffe6fa;
-      --btn-hover: #ffffff;
-      --link-color: #1e90ff;
-    }
+
    /* ------------------------- */
 /* New Overlay Loader styles with Image */
 #loader {
@@ -66,9 +55,7 @@
     flex-direction: column;
 }
 
-body.dark-mode #loader {
-    background: rgba(0, 0, 0, 0.8); /* Dark mode background */
-}
+
 
 .loader-content {
     text-align: center;
@@ -96,9 +83,7 @@ body.dark-mode #loader {
     font-weight: 500;
 }
 
-body.dark-mode .loader-text {
-    color: #fff; /* Dark mode text */
-}
+
 /* ------------------------- */
 .loader-image {
     width: 100px;
@@ -265,16 +250,7 @@ body.dark-mode .loader-text {
   </style>
   <!-- 👇 Script لتطبيق الوضع الداكن/الفاتح عند تحميل الصفحة -->
   <script>
-    // عند تحميل الصفحة، تحقق من إعداد السمة وطبقها
-    document.addEventListener("DOMContentLoaded", function () {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-mode');
-        } else {
-            // Ensure light mode is active if 'dark' is not explicitly saved
-            document.body.classList.remove('dark-mode');
-        }
-    });
+   
   </script>
 </head>
 <body>
@@ -841,5 +817,4 @@ body.dark-mode .loader-text {
     window.onload = displayProductDetails;
   </script>
 </body>
->>>>>>> 1ca9840fd7669e69ef9fcfdb733ea761df62ea9d
 </html>

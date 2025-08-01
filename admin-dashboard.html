@@ -1138,39 +1138,7 @@
             await fetchOrders(); // جلب الطلبات عند التحميل
             // لا حاجة لجلب الطلبات المكتملة حتى يتم طلبها
         });
-    </script>
-</body>
-
-</html>yle.display = "none";
-            }
-        }
-
-        function toggleCompletedOrderDetails(orderId) {
-            const details = document.getElementById(`completed-details-${orderId}`);
-            if (details.style.display === "none" || details.style.display === "") {
-                details.style.display = "block";
-            } else {
-                details.style.display = "none";
-            }
-        }
-
-        // دوال إدارة القائمة الجانبية
-        function toggleSubMenu(submenuId) {
-            const submenu = document.getElementById(submenuId + "-submenu");
-            if (submenu.style.display === "block") {
-                submenu.style.display = "none";
-            } else {
-                submenu.style.display = "block";
-            }
-        }
-
-        // تحميل البيانات الأولية عند بدء التشغيل
-        window.addEventListener('DOMContentLoaded', async () => {
-            await fetchProducts(); // جلب المنتجات عند التحميل
-            await fetchOrders(); // جلب الطلبات عند التحميل
-            // لا حاجة لجلب الطلبات المكتملة حتى يتم طلبها
-        });
-    </script>
+     </script>
 </body>
 
 </html>
