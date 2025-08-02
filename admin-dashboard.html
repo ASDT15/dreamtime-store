@@ -361,9 +361,10 @@
     </div>
 
     <script>
-        // دوال مساعدة لجلب وتحديث البيانات من/إلى الواجهات البرمجية
-        const API_BASE_URL = 'https://dreamtime-store-api.onrender.com'; // تأكد من مطابقة منفذ الخادم
-
+        // تحديد عنوان API_BASE_URL
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:10000'
+  : 'https://dreamtime-store-api.onrender.com';
         let products = [];
         let orders = [];
 

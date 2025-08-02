@@ -844,6 +844,45 @@
     .cart-item {
       animation: fadeInUp 0.3s ease forwards;
     }
+    .modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #0f0f0f;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #080808;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.close {
+  color: #030303;
+  float: left; /* لأن الاتجاه من اليمين لليسار */
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  left: 15px; /* اليسار في الاتجاه العكسي */
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 </head>
@@ -883,6 +922,10 @@
         <button class="order-status-btn" onclick="window.location.href='order-status.html'">
           حالة الطلب
         </button>
+        <!-- داخل القسم المناسب في الهيدر، مثلاً بجانب زر العربة أو حالة الطلب -->
+<button id="accountButton" class="order-status-btn" style="margin-left: 10px;">
+    <span id="accountButtonText">حسابي</span>
+</button>
 
         <button id="soundButton">🔇 فتح الصوت</button>
 
@@ -944,31 +987,42 @@
   <audio id="sendSound" src="arsal.mp3"></audio>
   <audio id="emptySound" src="tvrug.mp3"></audio>
 
-  <!-- Login Modal (if needed) -->
-  <div id="loginModal" class="cart-modal">
-    <div class="cart-modal-content">
-      <h2>تسجيل الدخول</h2>
-      <p>يرجى إدخال رقم هاتفك:</p>
-      <input type="tel" id="phoneNumberInput" placeholder="رقم الهاتف"
-        style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc;" />
-      <button onclick="sendVerificationCode()"
-        style="background: var(--btn-bg); color: #000; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; margin: 10px 0;">إرسال
-        رمز التحقق</button>
-      <div id="verificationContainer" style="display:none;">
-        <p>أدخل رمز التحقق الذي تم إرساله إلى هاتفك:</p>
-        <input type="text" id="verificationCodeInput" placeholder="رمز التحقق (4 أرقام)"
-          style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc;" />
-        <button onclick="verifyUser()"
-          style="background: var(--btn-bg); color: #000; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; margin: 10px 0;">تأكيد</button>
-      </div>
-      <button onclick="document.getElementById('loginModal').style.display='none'"
-        style="background: #666; color: #fff; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%;">إلغاء</button>
+ 
     </div>
   </div>
+<!-- نموذج تسجيل الدخول / الحساب الشخصي -->
+<div id="accountModal" class="modal" style="display:none;">
+  <div class="modal-content" style="direction: rtl; text-align: right; background: #fff; padding: 20px; border-radius: 10px; max-width: 400px; width: 90%; margin: 15% auto;">
+    <span class="close" onclick="document.getElementById('accountModal').style.display='none'">&times;</span>
+    <h2 style="text-align: center; margin-bottom: 20px;">تسجيل الدخول إلى حسابك</h2>
+
+    <!-- شاشة إدخال البيانات -->
+    <div id="loginForm">
+      <label for="userNameInput">الاسم الكامل:</label>
+      <input type="text" id="userNameInput" placeholder="أدخل اسمك الكامل" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px;">
+      
+      <label for="userPhoneInput">رقم الهاتف:</label>
+      <input type="tel" id="userPhoneInput" placeholder="أدخل رقم هاتفك" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px;">
+      
+      <button onclick="submitUserInfo()" style="width: 100%; padding: 12px; background-color: var(--btn-bg); color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px;">تسجيل الدخول</button>
+    </div>
+
+    <!-- شاشة عرض حالة الطلب -->
+    <div id="orderStatusView" style="display:none;">
+        <h3 style="text-align: center;">حالة طلباتي</h3>
+        <div id="userOrderDetails" style="margin-top: 20px;">
+            <!-- سيتم ملء التفاصيل هنا بواسطة JavaScript -->
+        </div>
+        <button onclick="logoutUser()" style="width: 100%; padding: 12px; background-color: #666; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">تسجيل الخروج</button>
+    </div>
+  </div>
+</div>
 
   <script>
-    // Utility Functions
-    const API_BASE_URL = 'https://dreamtime-store-api.onrender.com';
+   // تحديد عنوان API_BASE_URL
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:10000'
+  : 'https://dreamtime-store-api.onrender.com';
     const STORAGE_KEY = "dreamtime_cart";
     let products = [];
     let soundEnabled = false;
@@ -1369,29 +1423,6 @@
       window.location.href = "payment.html";
     }
 
-    function sendVerificationCode() {
-      const phoneNumber = document.getElementById("phoneNumberInput").value.trim();
-      if (!phoneNumber) {
-        alert("يرجى إدخال رقم الهاتف.");
-        return;
-      }
-      const code = Math.floor(1000 + Math.random() * 9000);
-      localStorage.setItem("dreamtime_verification_code", code.toString());
-      localStorage.setItem("dreamtime_user", JSON.stringify({ phoneNumber }));
-      document.getElementById("verificationContainer").style.display = "block";
-    }
-
-    function verifyUser() {
-      const enteredCode = document.getElementById("verificationCodeInput").value.trim();
-      const storedCode = localStorage.getItem("dreamtime_verification_code");
-      if (enteredCode !== storedCode) {
-        alert("رمز التحقق غير صحيح.");
-        return;
-      }
-      alert("تم التحقق بنجاح!");
-      document.getElementById("loginModal").style.display = "none";
-      window.location.href = "payment.html";
-    }
 
     // Initialize App
     document.addEventListener("DOMContentLoaded", function () {
@@ -1415,6 +1446,130 @@
         hammer.get('pan').set({ direction: Hammer.DIRECTION_HORIZONTAL });
       }
     });
+    // تأكد من أن هذا الكود يُنفذ بعد تحميل DOM
+document.addEventListener("DOMContentLoaded", function () {
+    // ربط حدث النقر على زر الحساب
+    document.getElementById('accountButton').addEventListener('click', openAccountModal);
+
+    // التحقق من حالة تسجيل الدخول عند تحميل الصفحة
+    checkLoginStatus();
+});
+
+// دالة لفتح نافذة الحساب
+function openAccountModal() {
+    const isLoggedIn = localStorage.getItem('dreamtime_user_logged_in') === 'true';
+    if (isLoggedIn) {
+        // إذا كان مسجلاً، عرض حالة الطلب
+        showOrderStatus();
+    } else {
+        // إذا لم يكن مسجلاً، عرض نموذج تسجيل الدخول
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('orderStatusView').style.display = 'none';
+    }
+    document.getElementById('accountModal').style.display = 'block';
+}
+
+// دالة لإرسال معلومات المستخدم
+async function submitUserInfo() {
+    const name = document.getElementById('userNameInput').value.trim();
+    const phone = document.getElementById('userPhoneInput').value.trim();
+
+    if (!name || !phone) {
+        alert("يرجى إدخال الاسم ورقم الهاتف.");
+        return;
+    }
+
+    try {
+        // تخزين معلومات المستخدم محليًا (بدون تأكيد عبر SMS في هذا المثال البسيط)
+        const userData = { name: name, phone: phone };
+        localStorage.setItem('dreamtime_user_logged_in', 'true');
+        localStorage.setItem('dreamtime_user_data', JSON.stringify(userData));
+
+        // تحديث واجهة الزر
+        document.getElementById('accountButtonText').textContent = `مرحبًا، ${name.split(' ')[0]}`;
+        
+        // عرض حالة الطلب
+        showOrderStatus();
+
+    } catch (error) {
+        console.error("خطأ في تسجيل الدخول:", error);
+        alert("حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى.");
+    }
+}
+
+// دالة لعرض حالة الطلب
+async function showOrderStatus() {
+    const userData = JSON.parse(localStorage.getItem('dreamtime_user_data'));
+    if (!userData) {
+        alert("يرجى تسجيل الدخول أولاً.");
+        return;
+    }
+
+    try {
+        // إخفاء نموذج تسجيل الدخول وإظهار عرض الطلب
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('orderStatusView').style.display = 'block';
+
+        // جلب بيانات الطلب من الخادم (مثلاً، الطلبات التي تطابق رقم الهاتف)
+        // نفترض أن لديك نقطة نهاية في API لجلب الطلبات بالهاتف
+        // ملاحظة: هذا مثال، قد تحتاج تعديل بناءً على API الفعلي
+        const response = await fetch(`${API_BASE_URL}/api/orders?phone=${encodeURIComponent(userData.phone)}`, {
+             headers: {
+                 'Cache-Control': 'no-cache'
+             }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const orders = await response.json();
+        const orderDetailsContainer = document.getElementById('userOrderDetails');
+        
+        if (orders && orders.length > 0) {
+            // عرض أحدث طلب كمثال
+            const latestOrder = orders[0]; // افترض أن الأحدث هو الأول
+            orderDetailsContainer.innerHTML = `
+                <p><strong>رقم الطلب:</strong> ${latestOrder.order_id || 'غير متوفر'}</p>
+                <p><strong>الحالة:</strong> ${latestOrder.status || 'قيد المعالجة'}</p>
+                <p><strong>الاسم:</strong> ${latestOrder.customer_name || userData.name}</p>
+                <p><strong>رقم الهاتف:</strong> ${latestOrder.phone || userData.phone}</p>
+                <p><strong>الموقع:</strong> ${latestOrder.location || 'غير محدد'}</p>
+                <p><strong>التاريخ:</strong> ${new Date(latestOrder.created_at).toLocaleString('ar-EG')}</p>
+                <!-- يمكنك إضافة المزيد من التفاصيل هنا -->
+            `;
+        } else {
+            orderDetailsContainer.innerHTML = "<p>لا توجد طلبات مرتبطة بهذا الحساب.</p>";
+        }
+
+    } catch (error) {
+        console.error("خطأ في جلب حالة الطلب:", error);
+        document.getElementById('userOrderDetails').innerHTML = "<p>حدث خطأ أثناء جلب حالة الطلب. يرجى المحاولة لاحقًا.</p>";
+    }
+}
+
+
+// دالة لتسجيل الخروج
+function logoutUser() {
+    localStorage.removeItem('dreamtime_user_logged_in');
+    localStorage.removeItem('dreamtime_user_data');
+    document.getElementById('accountButtonText').textContent = 'حسابي';
+    document.getElementById('accountModal').style.display = 'none';
+    // إعادة تعيين حقول النموذج
+    document.getElementById('userNameInput').value = '';
+    document.getElementById('userPhoneInput').value = '';
+}
+
+// دالة للتحقق من حالة تسجيل الدخول عند تحميل الصفحة
+function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('dreamtime_user_logged_in') === 'true';
+    if (isLoggedIn) {
+        const userData = JSON.parse(localStorage.getItem('dreamtime_user_data'));
+        if (userData && userData.name) {
+            document.getElementById('accountButtonText').textContent = `مرحبًا، ${userData.name.split(' ')[0]}`;
+        }
+    }
+}
   </script>
 </body>
 
